@@ -54,7 +54,7 @@ async function initInteractive(options) {
 
   console.log(`
 ╔═══════════════════════════════════════════╗
-║     🚀 EVNICT-KIT v0.2.1: Init Setup    ║
+║     🚀 EVNICT-KIT v0.2.2: Init Setup    ║
 ╚═══════════════════════════════════════════╝
 `);
 
@@ -223,7 +223,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║         🚀 EVNICT-KIT v0.2.1: Init Workspace         ║
+║         🚀 EVNICT-KIT v0.2.2: Init Workspace         ║
 ╚═══════════════════════════════════════════════════════╝
 
    Project:  ${name}
@@ -248,7 +248,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
   writeFile(join(evnictDir, 'handoff/be-status.md'), `# BE Status\nstatus: idle\n`, {cwd,silent:true});
   writeFile(join(evnictDir, 'handoff/fe-status.md'), `# FE Status\nstatus: idle\n`, {cwd,silent:true});
 
-  // v0.2.1: Tạo handoff.md template
+  // v0.2.2: Tạo handoff.md template
   const handoffTemplate = `# Agent Handoff Log
 > File này dùng để trao đổi giữa BE Agent và FE Agent.
 > Mỗi issue ghi theo format bên dưới.
@@ -363,7 +363,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║  ✅  Workspace "${name}" v0.2.1 initialized!          ║
+║  ✅  Workspace "${name}" v0.2.2 initialized!          ║
 ╠═══════════════════════════════════════════════════════╣
 ║                                                       ║
 ║  Projects:                                            ║
@@ -468,7 +468,7 @@ function updateGitignore(projectPath, projectName) {
 }
 
 // ════════════════════════════════════════════════════════════════════
-// Deploy to individual project — v0.2.1 Multi-Tool Adapter Pattern
+// Deploy to individual project — v0.2.2 Multi-Tool Adapter Pattern
 // ════════════════════════════════════════════════════════════════════
 
 function deployToProject(projectPath, cwd, opts) {
@@ -678,7 +678,7 @@ function deployShared(projectPath, cwd, opts) {
     writeFile(join(projectPath, 'Instruct-Agent-AI.md'), content, {cwd});
   }
 
-  // ═══ GETTING-STARTED.md (v0.2.1) ═══
+  // ═══ GETTING-STARTED.md (v0.2.2) ═══
   const guideTemplate = join(TEMPLATES_DIR, 'GETTING-STARTED.md');
   if (existsSync(guideTemplate)) {
     let content = readFileSync(guideTemplate, 'utf8');
@@ -699,7 +699,7 @@ function genConfig(name, repoConfigs, db, tool, wiki) {
     `  - { folder: "${r.folder}", type: "${r.type}", tech: "${r.tech}" }`
   ).join('\n');
 
-  return `# EVNICT-KIT v0.2.1 Config
+  return `# EVNICT-KIT v0.2.2 Config
 project:
   name: "${name}"
 repos:

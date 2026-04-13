@@ -1,5 +1,5 @@
 # EVNICT-KIT — Hướng Dẫn Sử Dụng
-> File này được tạo bởi evnict-kit v0.2.1
+> File này được tạo bởi evnict-kit v0.2.2
 > Đọc file này để biết dùng workflow nào cho công việc nào
 
 ---
@@ -191,6 +191,6 @@ evnict-kit init → init-rules → init-context → init-check → init-wiki →
 ---
 
 ## 📌 Phiên bản
-- **evnict-kit:** v0.2.1
+- **evnict-kit:** v0.2.2
 - **Ngày tạo:** {{DATE}}
 - **Project:** {{PROJECT_NAME}}
