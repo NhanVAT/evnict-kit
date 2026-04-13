@@ -1,0 +1,17 @@
+# LLM Wiki Configuration
+project: "{{PROJECT_NAME}}"
+raw_path: "raw/notes"
+processed_path: "processed"
+index_path: "processed/index.json"
+
+# Ingest settings
+ingest:
+  auto: true
+  on_push: true
+  format: markdown
+  frontmatter: required
+
+# Query settings
+query:
+  search_type: keyword
+  max_results: 10

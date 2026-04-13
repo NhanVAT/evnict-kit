@@ -1,0 +1,43 @@
+---
+description: EVNICT Frontend Conventions — Angular, PrimeNG, RxJS, i18n, Responsive
+globs: "**/*.ts,**/*.html,**/*.scss"
+alwaysApply: false
+---
+
+# Frontend Conventions — EVNICT Standard
+> QĐ-TTPM Điều 8, Mục 8.6 | Angular + PrimeNG
+
+## RF01: No Inline Styles
+- Tất cả styles trong .scss — KHÔNG style="..." hoặc [style.x]
+- Dùng CSS classes, [class.active]="condition"
+
+## RF02: Component Reuse
+- Kiểm tra PrimeNG (p-table, p-dialog, p-dropdown) trước khi tạo mới
+- Component dùng ≥2 nơi → đặt trong shared/
+
+## RF03: No Hardcoded Text / i18n
+- ALL text qua `{{ 'key' | translate }}` (ngx-translate)
+- Labels, messages, tooltips, placeholders → translate
+
+## RF04: Accessibility
+- img PHẢI có alt. Form field PHẢI có label/aria-label.
+- Interactive elements PHẢI có tabindex. Color contrast ≥ 4.5:1
+
+## RF05: No Direct DOM
+- KHÔNG document.getElementById() / querySelector()
+- Dùng @ViewChild, Renderer2, template bindings
+
+## RF06: Responsive
+- Desktop (≥1200), Tablet (768-1199), Mobile (≤767)
+- PrimeNG Grid: `class="col-12 md:col-6 lg:col-4"`
+- Table: `[scrollable]="true" responsiveLayout="scroll"`
+
+## Angular Conventions
+- File: `{name}.component.ts`, `{name}.service.ts`, `{name}.module.ts`
+- Component order: Decorators → Public props → Private → Constructor → Lifecycle → Public methods → Private methods
+- RxJS: takeUntil(destroy$) hoặc async pipe — KHÔNG subscribe leak
+- Service: `@Injectable({ providedIn: 'root' })`, base URL từ environment
+
+## Naming
+- Selector prefix: `app-`, File: `customer-list.component.ts`
+- Feature path: `src/app/features/{module}/`, Shared: `src/app/shared/`

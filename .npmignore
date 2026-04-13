@@ -1,0 +1,9 @@
+node_modules/
+.git/
+*.rar
+*.tar.gz
+exemplar-*.md
+*UPGRADE-PROMPT*.md
+*Phan-hoi*.md
+scripts/
+.evnict/

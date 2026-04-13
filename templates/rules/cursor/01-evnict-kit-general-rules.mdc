@@ -1,0 +1,46 @@
+---
+description: EVNICT General Rules — No Secrets, No Auto Push, Test Before Commit, Minimal Diff
+globs: 
+alwaysApply: true
+---
+
+# General Rules — EVNICT Standard
+> QĐ-TTPM Điều 8 — LUÔN kiểm tra. Vi phạm → DỪNG ngay.
+
+## R01: No Hardcoded Secrets — CRITICAL
+- KHÔNG hardcode passwords, API keys, tokens, JWT secrets, connection strings
+- Dùng env vars: `@Value("${spring.datasource.password}")`, `environment.apiUrl`
+- Scan: `grep -rn "password\s*=\s*\"" --include="*.java" --include="*.ts" src/`
+
+## R02: No Auto Git Push
+- KHÔNG `git push` / `git push --force` — PHẢI HỎI USER
+- Được phép: `git add`, `git commit`, `git status`, `git log`, `git diff`, `git stash`
+
+## R03: No Destructive Operations
+- KHÔNG `rm -rf` trên src/, database/, docs/
+- KHÔNG `DROP TABLE`, `TRUNCATE TABLE` production
+- Trước khi xóa → kiểm tra git status, hỏi user confirm
+
+## R04: No PII In Logs
+- KHÔNG log: password, token, JWT, CMND, phone, email, card number
+- OK: log userId, customerId, action, count, status
+
+## R05: Test Before Commit
+- BẮT BUỘC: `./mvnw test` (BE) hoặc `ng test --watch=false` (FE)
+- Test FAIL → fix trước, không commit
+
+## R06: Minimal Diff
+- CHỈ sửa code liên quan yêu cầu
+- KHÔNG refactor/rename ngoài scope
+- Sửa >3 lần cùng đoạn → DỪNG (vibe coding)
+
+## R07: No Placeholder Code
+- KHÔNG `// TODO: implement later`, KHÔNG method rỗng
+- Mỗi function PHẢI có logic thực tế
+
+## R08: Respect Gitignore
+- KHÔNG tạo/commit: node_modules/, .env, *.key, *.pem, target/, dist/
+
+## Checkpoint
+- Trước phiên AI: `git checkout -b feature/ai-task-xxx`
+- Revert được trong ≤ 1 thao tác git

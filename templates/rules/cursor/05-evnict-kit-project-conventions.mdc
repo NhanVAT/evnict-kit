@@ -1,0 +1,63 @@
+---
+description: EVNICT Project Conventions — Project-specific patterns (CHƯA KHỞI TẠO)
+globs: 
+alwaysApply: true
+---
+
+# Project Conventions — EVNICT Standard
+> QĐ-TTPM Phụ lục IV | ⚠️ File này cần được khởi tạo bởi AI Agent
+
+## RP01 — NAMING CONVENTION
+> ⚠️ CHƯA ĐƯỢC KHỞI TẠO — Agent scan codebase để điền.
+```
+Package: com.evn.{project}.{module}  |  Class: {Module}{Type}.java
+Method: camelCase  |  Constant: UPPER_SNAKE  |  Table: UPPER_SNAKE
+API: /api/{module}/{action}
+```
+
+## RP02 — ARCHITECTURE PATTERN
+> ⚠️ CHƯA ĐƯỢC KHỞI TẠO
+```
+Architecture: Layered MVC
+Controller → Service → Repository → DB
+Module: src/main/java/com/evn/{project}/{module}/{controller,service,repository,dto}/
+```
+
+## RP03 — CODING CONVENTION
+> ⚠️ CHƯA ĐƯỢC KHỞI TẠO
+```
+Indent: 4 spaces (Java), 2 spaces (TS/HTML/SCSS)
+Logging: SLF4J @Slf4j  |  Null: Optional return types
+```
+
+## RP04 — API CONVENTION
+> ⚠️ CHƯA ĐƯỢC KHỞI TẠO
+```
+Response: ResponseData { status, message, data }
+Pagination: ?page=0&size=20&sort=name
+Auth: Authorization: Bearer {token}
+```
+
+## RP05 — DATABASE CONVENTION
+> ⚠️ CHƯA ĐƯỢC KHỞI TẠO
+```
+DB: Oracle 19c  |  PK: ID (NUMBER, sequence)
+Audit: CREATED_BY, CREATED_DATE, UPDATED_BY, UPDATED_DATE
+Soft delete: IS_DELETED NUMBER(1) DEFAULT 0
+```
+
+## RP06 — COMPONENT CONVENTION
+> ⚠️ CHƯA ĐƯỢC KHỞI TẠO
+```
+Selector: app-  |  UI: PrimeNG 16+  |  Forms: Reactive (FormBuilder)
+Routing: Lazy-loaded feature modules
+```
+
+## RP07 — INTEGRATION MAP
+> ⚠️ CHƯA ĐƯỢC KHỞI TẠO
+```
+Auth: EVN SSO JWT  |  Files: MinIO  |  Cache: Redis  |  Docs: CMIS
+```
+
+---
+> Chạy `/evnict-kit:init-rules` → Agent đọc codebase → điền nội dung thực tế.

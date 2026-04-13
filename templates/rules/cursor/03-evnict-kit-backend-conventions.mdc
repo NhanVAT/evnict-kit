@@ -1,0 +1,50 @@
+---
+description: EVNICT Backend Conventions — Java Spring Boot, JOOQ, Oracle, Service Layer
+globs: "**/*.java"
+alwaysApply: false
+---
+
+# Backend Conventions — EVNICT Standard
+> QĐ-TTPM Điều 8, Mục 8.6 | Java Spring Boot + JOOQ + Oracle
+
+## RB01: Input Validation
+- @Valid + @NotNull, @NotBlank, @Size, @Pattern trên DTO
+- Whitelist sort columns: `ALLOWED_SORT.contains(sortBy)`
+
+## RB02: Service Layer Pattern
+- Controller: validate input, call service, return ResponseData
+- Service: business logic, @Transactional
+- Repository: data access ONLY (JOOQ)
+- DTO: data transfer — KHÔNG dùng Entity cho response
+
+## RB03: Error Handling
+```java
+@RestControllerAdvice
+GlobalExceptionHandler {
+  BusinessException → ResponseData.error(msg)
+  ValidationException → ResponseData.error(field errors)
+  Exception → log.error(full), return "Có lỗi xảy ra" (NO stack trace)
+}
+```
+
+## RB04: Database Migration
+- Flyway: `V{YYYYMMDD}_{seq}__{desc}.sql` + rollback
+- KHÔNG raw DDL trong Java code
+
+## RB05: Auth Every Route
+- Default deny: `.anyRequest().authenticated()`
+- Public → whitelist rõ ràng: `/api/auth/login`, `/actuator/health`
+- @PreAuthorize cho role/data-level auth
+
+## RB06: Rate Limiting
+- API public (login) → rate limit BẮT BUỘC
+
+## JOOQ Conventions
+- `fetchInto(DTO.class)` thay vì manual mapping
+- Pagination: `.offset(page * size).limit(size)`
+- @Transactional ở Service layer
+
+## Naming
+- Class: PascalCase (`CustomerService`), Method: camelCase
+- Table/Column: UPPER_SNAKE (`CUSTOMER`, `CREATED_DATE`)
+- File: `{Module}Controller.java`, `{Module}Service.java`, `{Module}DTO.java`

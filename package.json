@@ -1,0 +1,48 @@
+{
+  "name": "evnict-kit",
+  "version": "0.2.1",
+  "description": "EVNICT AI-Assisted Development Toolkit - Bộ công cụ hỗ trợ phát triển phần mềm với AI theo quy định QĐ-TTPM",
+  "type": "module",
+  "bin": {
+    "evnict-kit": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "templates/",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node test/test.js",
+    "link": "npm link"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "js-yaml": "^4.1.0"
+  },
+  "keywords": [
+    "evnict",
+    "evn",
+    "ai",
+    "development",
+    "toolkit",
+    "coding-agent"
+  ],
+  "author": "EVNICT - Trung tâm Phát triển Phần mềm",
+  "thirdPartyLicenses": {
+    "llm-wiki": {
+      "version": "1.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/mduongvandinh/llm-wiki",
+      "note": "Minimal scaffold bundled in templates/wiki/"
+    }
+  },
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NhanVAT/evnict-kit"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

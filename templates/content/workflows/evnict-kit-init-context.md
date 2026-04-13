@@ -1,0 +1,58 @@
+---
+description: Agent sinh AGENTS.md context file từ rules đã khởi tạo + codebase analysis.
+---
+
+# Init Context — Sinh AGENTS.md
+**Command:** `/evnict-kit:init-context`
+
+## Mục đích
+Đọc rules đã khởi tạo (RP01-RP07) + scan codebase → sinh file AGENTS.md đầy đủ ở root project.
+
+## Pre-conditions
+- `/evnict-kit:init-rules` đã chạy thành công
+- File `05-evnict-kit-project-conventions.md` đã có nội dung (không còn placeholders)
+
+---
+
+## Workflow
+
+### Bước 1: Thu thập context
+1. Đọc `.evnict/config.yaml` → project info
+2. Đọc `05-evnict-kit-project-conventions.md` → conventions
+3. Đọc `.agent/context/init-summary-*.md` → scan results
+4. Scan codebase: `tree -L 3`, pom.xml/package.json, config files
+
+### Bước 2: Sinh AGENTS.md
+Tạo file AGENTS.md ở root project (400-600 dòng) với sections:
+
+1. **Project Overview** — tên, mô tả, tech stack
+2. **Architecture Diagram** — ASCII art
+3. **Tech Stack Table** — framework, library, version
+4. **Project Structure** — tree view
+5. **Development Commands** — build, test, run
+6. **Coding Conventions Summary** — tóm tắt từ rules
+7. **API Conventions** — endpoint patterns, response format
+8. **Database Conventions** — naming, migration
+9. **Security Rules Summary** — critical rules
+10. **Agent Commands** — available workflows/skills
+11. **Safety Rules** — no push, no secrets, no PII
+12. **Integration Map** — external services
+
+### Bước 3: Validate
+- [ ] File 400-600 dòng
+- [ ] Architecture diagram included
+- [ ] Tech stack complete
+- [ ] Commands accurate
+- [ ] No secrets/IPs
+
+### Bước 4: Confirm
+```
+✅ AGENTS.md created: {line count} lines
+📋 Sections: 12
+🔒 Security: verified (no secrets)
+```
+
+---
+
+## Output
+File `AGENTS.md` ở root project — context file duy nhất cho AI Agent.

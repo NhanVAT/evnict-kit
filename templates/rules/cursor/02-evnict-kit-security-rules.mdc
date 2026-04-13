@@ -1,0 +1,46 @@
+---
+description: EVNICT Security Rules — SQL Injection, XSS, JWT, File Upload, OWASP Top 10
+globs: 
+alwaysApply: true
+---
+
+# Security Rules (ATTT) — EVNICT Standard
+> QĐ-TTPM Điều 8, OWASP Top 10:2021
+
+## ATTT01: SQL Injection — CRITICAL
+- JOOQ type-safe mặc định an toàn: `CUSTOMER.NAME.eq(name)`
+- KHÔNG string concat: ~~`"SELECT * FROM X WHERE Y = '" + input + "'"`~~
+- Dynamic ORDER BY → whitelist allowed columns
+- Scan: `grep -rn "query.*+.*\"" --include="*.java" src/`
+
+## ATTT02: XSS — CRITICAL
+- Angular: `{{ userContent }}` (auto-escaped) — KHÔNG `[innerHTML]`
+- KHÔNG `bypassSecurityTrustHtml()` — dùng DOMPurify nếu bắt buộc
+- Backend: CSP headers, X-Content-Type-Options: nosniff
+
+## ATTT03: CSRF
+- JWT stateless → disable CSRF OK
+- Session-based → CookieCsrfTokenRepository
+
+## ATTT04: JWT Authentication
+- RS256/RS512 ONLY — KHÔNG HS256
+- Key ≥ 2048 bits, exp ≤ 24h, validate iss + aud
+- KHÔNG lưu PII trong JWT payload
+
+## ATTT05: Dependency CVE
+- `./mvnw org.owasp:dependency-check-maven:check`
+- `npm audit`
+- Critical → 24h hotfix
+
+## ATTT06: File Upload
+- Extension whitelist (pdf, docx, xlsx, png, jpg)
+- MIME type check + file size limit
+- UUID rename, lưu MinIO (KHÔNG static/)
+
+## ATTT07: Data Exposure
+- LUÔN dùng DTO — KHÔNG return Entity
+- KHÔNG expose: password hash, internal IDs, stack trace
+
+## ATTT08: Anti-Vibe-Coding
+- Sửa >3 lần cùng đoạn → DỪNG phiên AI
+- Code không giải thích được = không merge
