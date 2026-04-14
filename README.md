@@ -69,6 +69,29 @@ Mở AI Agent (Antigravity / Claude / Cursor / ...) trong thư mục project, sa
 
 ---
 
+## 🔄 Cập nhật phiên bản mới (Upgrade)
+
+Khi có bản cập nhật mới của `evnict-kit`, bạn làm theo 2 bước sau để nâng cấp hoàn chỉnh:
+
+### 1. Nâng cấp công cụ trên máy (Global)
+Cập nhật package cài đặt chung cho môi trường làm việc của bạn:
+```bash
+npm update -g evnict-kit
+# Hoặc an toàn hơn, dùng lệnh có sẵn:
+evnict-kit upgrade
+```
+
+### 2. Đồng bộ file vào Project hiện tại (Sync)
+Lưu ý: Các dự án của bạn (đã được `init` từ bản cũ) **sẽ không tự động nhận** các Workflows, Skills hay Rules mới.
+Bạn cần di chuyển vào thư mục dự án và chạy lệnh:
+```bash
+cd /path/to/workspace/your-project
+evnict-kit sync
+```
+> **💡 Tính năng lệnh Sync:** Hệ thống sẽ tự động phát hiện xem project đang dùng AI Tool nào (Antigravity/Claude/Cursor...) và cập nhật/ghi đè các file chuẩn của `evnict-kit`, trong khi vẫn **GIỮ NGUYÊN HOÀN TOÀN** các đoạn code hoặc Project Rules riêng mà bạn tự định nghĩa.
+
+---
+
 ## 🎯 Tính năng
 
 ### 🧠 Rules Engine — 5 Rule Sets
@@ -306,7 +329,13 @@ FE: Đọc handoff.md → implement → update 🟢 Đã xử lý
 
 ## 📜 Changelog
 
-### v0.2.3 (Current)
+### v0.2.4 (Current)
+- 📚 **Native llm-wiki Integration**: Chuyển đổi toàn bộ quy trình Wiki sang chuẩn `llm-wiki` với Agent-driven ingestion — xoá bỏ sự phụ thuộc script Node.js (`scripts/ingest.js`)
+- 🧹 **Cấu trúc Wiki chuẩn hóa**: Wiki project giờ đây được sắp xếp sạch sẽ trong `wiki/entities/`, `wiki/concepts/`, `wiki/sources/`, `wiki/syntheses/` (thay vì folder `processed/` cũ)
+- 🤖 **Auto-Skills**: Agent tự động dùng skill `llm-wiki` (`SKILL.md`) để đọc code, sinh tri thức và trích xuất thực thể chuyên nghiệp
+- 🗑️ **Refactoring**: Cập nhật toàn bộ Agent workflow (scan, query, archive) bám sát kiến trúc mới
+
+### v0.2.3
 - 🎨 **Frontend Design Skill**: Skill mới `evnict-kit-frontend-design` — hướng dẫn tư duy thiết kế UI chất lượng cao cho Angular, tránh "AI slop" aesthetics
 - 🧠 **Context Refresh**: Thêm section "Tuân thủ Rules & Context" vào TẤT CẢ 36 workflows/skills — cơ chế smart check (chỉ đọc lại nếu chưa đọc, tiết kiệm token)
 - 🎯 **FE Design Hint**: 6 workflows có code FE được bổ sung nhắc tham chiếu skill frontend-design
