@@ -24,7 +24,7 @@ compatibility: Java Spring Boot, Angular, ASP.NET Core
 1. Đọc `.evnict/config.yaml` → lấy project name, tech stack, wiki path
 2. Đọc `.agent/rules/05-evnict-kit-project-conventions.md` → nắm conventions dự án
 3. Query wiki (nếu có):
-   - Đọc index từ `{wiki_path}/processed/`
+   - Đọc index từ `{wiki_path}/wiki/`
    - Tìm theo keyword/domain/tags từ mô tả feature
    - Nếu tìm được context liên quan → đưa vào spec
 4. Scan codebase:

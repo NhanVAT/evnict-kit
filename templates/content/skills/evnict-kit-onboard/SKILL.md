@@ -76,7 +76,6 @@ cd {be-folder}
 
 # Frontend
 cd {fe-folder}
-npm install
 ng serve
 ```
 

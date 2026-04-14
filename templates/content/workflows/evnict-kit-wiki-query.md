@@ -25,9 +25,9 @@ description: Truy vấn tri thức từ wiki — tìm kiếm theo keyword, domai
 
 ## Bước 2: Search
 1. Đọc `{wiki_path}/wiki/INDEX.md` → map keywords (nếu INDEX tồn tại)
-2. Search trong `{wiki_path}/processed/` và `{wiki_path}/raw/notes/`:
+2. Search trong `{wiki_path}/wiki/` và `{wiki_path}/raw/notes/`:
    ```bash
-   grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"
+   grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"
    grep -rl "{keyword}" {wiki_path}/raw/notes/ --include="*.md"
    ```
 3. Đọc các pages liên quan (đọc ĐỦ nội dung, không chỉ 1-2 trang)
@@ -53,7 +53,7 @@ Tìm thấy {N} trang liên quan:
 {Tổng hợp nội dung liên quan từ các trang — đây là phần QUAN TRỌNG NHẤT}
 
 ## Nguồn:
-- {wiki_path}/processed/{page_1}.md
+- {wiki_path}/wiki/{page_1}.md
 - {wiki_path}/raw/notes/{page_2}.md
 ```
 

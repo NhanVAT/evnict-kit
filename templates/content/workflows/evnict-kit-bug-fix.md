@@ -19,7 +19,7 @@ description: Bug fix workflow — query wiki → classify → reproduce → TDD 
 ## Bước 1: Query wiki
 Kiểm tra bug đã được report/fix trước đó:
 ```bash
-grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"
+grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"
 ```
 
 ## Bước 2: Classify severity

@@ -19,7 +19,7 @@ description: Feature nhỏ nhanh — skip spec chi tiết, query wiki → plan n
 ## Bước 1: Query wiki
 Tìm context liên quan trong wiki:
 ```bash
-grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"
+grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"
 ```
 Đọc kết quả → áp dụng context.
 

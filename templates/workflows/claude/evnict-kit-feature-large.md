@@ -42,7 +42,7 @@ TRƯỚC KHI sinh spec, Agent PHẢI áp dụng skill `evnict-kit-brainstorm`:
 ### Bước 1: Thu thập context
 1. Đọc `.evnict/config.yaml` → lấy project name, tech stack, wiki path
 2. **Query wiki** (nếu có) → tìm context liên quan đến chức năng được mô tả:
-   - Đọc index từ `{wiki_path}/processed/`
+   - Đọc index từ `{wiki_path}/wiki/`
    - Tìm theo keyword/domain/tags từ mô tả feature
    - Nếu tìm được → đưa vào context khi tạo spec
 3. Đọc rules hiện tại trong `.agent/rules/` → nắm conventions dự án
@@ -363,7 +363,7 @@ Copy vào `{wiki_path}/raw/notes/{domain}-{slug}.md`
 
 ### Bước 3: Trigger ingest
 ```bash
-cd {wiki_path} && npm run ingest
+cd {wiki_path} && Agent follow SKILL.md to ingest
 ```
 ⚠️ Nếu ingest chưa setup → nhắc user chạy `/evnict-kit:init-wiki`
 
@@ -407,7 +407,7 @@ Nếu thay đổi > 20 dòng code → tạo `docs/postmortem/{feature}-{date}.md
 **→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
 - Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
 - Đọc lại AGENTS.md (hoặc context file tương ứng)
-- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"`
 
 **→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
 

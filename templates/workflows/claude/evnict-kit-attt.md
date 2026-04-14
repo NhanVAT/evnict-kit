@@ -81,7 +81,7 @@ Gọi skill `evnict-kit-wiki` action=push:
 
 Auto-ingest:
 ```bash
-cd {wiki_path} && node scripts/ingest.js
+cd {wiki_path} && Agent follow SKILL.md to ingest
 ```
 
 > **Lưu ý:** Để nạp tri thức chi tiết hơn, dùng:
@@ -104,7 +104,7 @@ cd {wiki_path} && node scripts/ingest.js
 **→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
 - Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
 - Đọc lại AGENTS.md (hoặc context file tương ứng)
-- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"`
 
 **→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
 

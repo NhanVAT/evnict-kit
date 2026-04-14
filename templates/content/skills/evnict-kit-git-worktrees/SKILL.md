@@ -63,8 +63,6 @@ Bạn cần có thao tác "Warm-up" ngay sau khi setup Folder mới:
 cd ../my-project-feature
 
 # Khởi tạo NPM Dependencies (cho Frontend / Node)
-npm install
-
 # Build Gradle / Maven dependencies (cho Backend)
 ./mvnw clean install -DskipTests
 

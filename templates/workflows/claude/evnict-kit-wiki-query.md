@@ -23,9 +23,9 @@ $ARGUMENTS chứa mô tả từ user.
 
 ## Bước 2: Search
 1. Đọc `{wiki_path}/wiki/INDEX.md` → map keywords (nếu INDEX tồn tại)
-2. Search trong `{wiki_path}/processed/` và `{wiki_path}/raw/notes/`:
+2. Search trong `{wiki_path}/wiki/` và `{wiki_path}/raw/notes/`:
    ```bash
-   grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"
+   grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"
    grep -rl "{keyword}" {wiki_path}/raw/notes/ --include="*.md"
    ```
 3. Đọc các pages liên quan (đọc ĐỦ nội dung, không chỉ 1-2 trang)
@@ -51,7 +51,7 @@ Tìm thấy {N} trang liên quan:
 {Tổng hợp nội dung liên quan từ các trang — đây là phần QUAN TRỌNG NHẤT}
 
 ## Nguồn:
-- {wiki_path}/processed/{page_1}.md
+- {wiki_path}/wiki/{page_1}.md
 - {wiki_path}/raw/notes/{page_2}.md
 ```
 
@@ -95,7 +95,7 @@ Nếu query dẫn đến so sánh/phân tích giữa nhiều trang:
 **→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
 - Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
 - Đọc lại AGENTS.md (hoặc context file tương ứng)
-- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"`
 
 **→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
 

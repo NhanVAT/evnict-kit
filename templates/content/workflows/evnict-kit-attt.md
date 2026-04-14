@@ -83,7 +83,7 @@ Gọi skill `evnict-kit-wiki` action=push:
 
 Auto-ingest:
 ```bash
-cd {wiki_path} && node scripts/ingest.js
+cd {wiki_path} && Agent follow SKILL.md to ingest
 ```
 
 > **Lưu ý:** Để nạp tri thức chi tiết hơn, dùng:

@@ -25,7 +25,7 @@ Nếu không tồn tại → DỪNG: *"Wiki chưa được liên kết. Chạy `
 
 ### Check 2: Wiki đã setup
 ```bash
-ls {project_name}-wiki/package.json
+ls {project_name}-wiki/CLAUDE.md
 ```
 Nếu không tồn tại → DỪNG: *"Wiki chưa khởi tạo. Chạy `/evnict-kit:init-wiki` trước."*
 
@@ -35,7 +35,7 @@ Nếu không tồn tại → DỪNG: *"Wiki chưa khởi tạo. Chạy `/evnict-
 Đang ở BE hay FE?
 - Có `pom.xml` hoặc `build.gradle` → **Backend**
 - Có `angular.json` → **Frontend (Angular)**
-- Có `package.json` + react dependency → **Frontend (React)**
+- Có `CLAUDE.md` + react dependency → **Frontend (React)**
 
 ---
 
@@ -231,9 +231,8 @@ Append vào `.evnict/handoff/handoff.md`:
 
 ## Bước 6: Auto-ingest
 ```bash
-cd {wiki_path} && node scripts/ingest.js
+cd {wiki_path} && Agent follow SKILL.md to ingest
 ```
-Nếu `scripts/ingest.js` không tồn tại → thử `npm run ingest`.
 Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 
 ---
@@ -274,7 +273,7 @@ Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 **→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
 - Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
 - Đọc lại AGENTS.md (hoặc context file tương ứng)
-- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"`
 
 **→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
 

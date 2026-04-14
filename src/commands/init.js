@@ -54,7 +54,7 @@ async function initInteractive(options) {
 
   console.log(`
 ╔═══════════════════════════════════════════╗
-║     🚀 EVNICT-KIT v0.2.3: Init Setup    ║
+║     🚀 EVNICT-KIT v0.2.4: Init Setup    ║
 ╚═══════════════════════════════════════════╝
 `);
 
@@ -223,7 +223,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║         🚀 EVNICT-KIT v0.2.3: Init Workspace         ║
+║         🚀 EVNICT-KIT v0.2.4: Init Workspace         ║
 ╚═══════════════════════════════════════════════════════╝
 
    Project:  ${name}
@@ -304,15 +304,24 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
       if (existsSync(wikiSrc)) {
         ensureDir(wikiPath, cwd);
         const count = copyTemplateDir(wikiSrc, wikiPath, cwd);
+        
+        // Tạo thêm folder structure cho Agent
+        ensureDir(join(wikiPath, 'wiki/entities'), cwd);
+        ensureDir(join(wikiPath, 'wiki/concepts'), cwd);
+        ensureDir(join(wikiPath, 'wiki/sources'), cwd);
+        ensureDir(join(wikiPath, 'wiki/syntheses'), cwd);
+        ensureDir(join(wikiPath, 'outputs'), cwd);
+        ensureDir(join(wikiPath, '.discoveries'), cwd);
+
         const configPath = join(wikiPath, 'config.example.yaml');
         if (existsSync(configPath)) {
           let content = readFileSync(configPath, 'utf8');
-          content = content.replaceAll('{{PROJECT_NAME}}', name);
+          content = content.replaceAll('My LLM Wiki', name);
           writeFileSync(join(wikiPath, 'config.yaml'), content, 'utf8');
           console.log(`   ✅ config.yaml created`);
         }
         console.log(`   ✅ Wiki template deployed (${count} files)`);
-        console.log(`   💡 Run: cd ${name}-wiki && npm install`);
+        console.log(`   💡 Mở Agent trong ${name}-wiki/, chạy: /llm-wiki init "${name}"`);
       } else {
         console.log(`   ⚠️  Wiki template not found — fallback to manual setup`);
         ensureDir(wikiPath, cwd);
@@ -363,7 +372,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║  ✅  Workspace "${name}" v0.2.3 initialized!          ║
+║  ✅  Workspace "${name}" v0.2.4 initialized!          ║
 ╠═══════════════════════════════════════════════════════╣
 ║                                                       ║
 ║  Projects:                                            ║
@@ -699,7 +708,7 @@ function genConfig(name, repoConfigs, db, tool, wiki) {
     `  - { folder: "${r.folder}", type: "${r.type}", tech: "${r.tech}" }`
   ).join('\n');
 
-  return `# EVNICT-KIT v0.2.3 Config
+  return `# EVNICT-KIT v0.2.4 Config
 project:
   name: "${name}"
 repos:

@@ -1,5 +1,5 @@
 ---
-description: Setup llm-wiki — copy template, npm install, config, first ingest. Hoặc clone fresh từ GitHub.
+description: Setup llm-wiki — copy template, , config, first ingest. Hoặc clone fresh từ GitHub.
 ---
 
 # Init Wiki — Setup LLM Wiki
@@ -31,7 +31,6 @@ cp -r {evnict-kit}/templates/wiki/ ./{project}-wiki/
 ### Bước 3: Install dependencies
 ```bash
 cd {project}-wiki
-npm install
 ```
 
 ### Bước 4: Configure
@@ -39,25 +38,24 @@ Tạo `config.yaml` từ `config.example.yaml`:
 ```yaml
 project: "{project-name}"
 raw_path: "raw/notes"
-processed_path: "processed"
-index_path: "processed/index.json"
+processed_path: "wiki"
+index_path: "wiki/index.json"
 ```
 
 ### Bước 5: Tạo folder structure
 ```bash
 mkdir -p raw/notes
-mkdir -p processed
+mkdir -p wiki
 ```
 
 ### Bước 6: First ingest (nếu có notes sẵn)
 ```bash
-npm run ingest
+Agent follow SKILL.md to ingest
 ```
 
 ### Bước 7: Verify
 ```
 ✅ Wiki setup: {project}-wiki/
-✅ Dependencies installed
 ✅ Config created
 ✅ Folders ready
 ```
@@ -90,11 +88,11 @@ Same as steps 3-7 above.
 **→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
 - Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
 - Đọc lại AGENTS.md (hoặc context file tương ứng)
-- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"`
 
 **→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
 
 > **NGUYÊN TẮC:** Không chắc convention → ĐỌC LẠI rule file. KHÔNG đoán.
 
 ## Output
-Wiki folder ready at `{project}-wiki/` with npm dependencies installed.
+Wiki folder ready at `{project}-wiki/` ready for Agent to populate.

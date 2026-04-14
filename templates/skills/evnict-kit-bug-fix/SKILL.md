@@ -23,7 +23,7 @@ compatibility: All tech stacks
 ### Bước 1: Query Wiki
 Tìm trong wiki xem bug này đã được report/fix trước đó chưa:
 ```bash
-grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"
+grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"
 ```
 Nếu đã có → đọc cách fix trước đó.
 

@@ -29,9 +29,9 @@ Nếu không tồn tại → DỪNG VÀ BÁO LỖI:
 ### Check 2: Wiki Software đã setup
 Agent thực hiện:
 ```bash
-ls {project_name}-wiki/package.json
+ls {project_name}-wiki/CLAUDE.md
 ```
-Nếu không tồn tại file package.json → DỪNG VÀ BÁO LỖI:
+Nếu không tồn tại file CLAUDE.md → DỪNG VÀ BÁO LỖI:
 *"Thư mục Wiki chưa được khởi tạo thư viện Ingestion. Vui lòng chạy `/evnict-kit:init-wiki` trước."*
 
 ### Check 3: Read/Write Permissions
@@ -55,13 +55,12 @@ Gọi skill `evnict-kit-wiki` action=push:
 - Sinh markdown file với frontmatter chuẩn
 - Copy vào `{wiki_path}/raw/notes/`
 
-## Bước 3: Auto-ingest (THAY CHO npm run ingest thủ công)
+## Bước 3: Auto-ingest (THAY CHO Agent follow SKILL.md to ingest thủ công)
 Agent TRỰC TIẾP chạy:
 ```bash
-cd {wiki_path} && node scripts/ingest.js
+cd {wiki_path} && Agent follow SKILL.md to ingest
 ```
 KHÔNG bắt user switch terminal hay chạy npm thủ công.
-Nếu `scripts/ingest.js` không tồn tại → thử `npm run ingest`.
 Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 
 ## Bước 4: Archive spec
@@ -106,7 +105,7 @@ Workflow này là shortcut. Để nạp tri thức chi tiết hơn, dùng:
 **→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
 - Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
 - Đọc lại AGENTS.md (hoặc context file tương ứng)
-- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"`
 
 **→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
 

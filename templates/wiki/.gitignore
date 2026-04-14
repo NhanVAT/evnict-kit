@@ -1,4 +1,56 @@
+# ========================================
+# LLM Wiki — .gitignore
+# ========================================
+
+# Outputs cá nhân (query results, reports, rankings)
+outputs/
+
+# Discovery metadata (chứa history cá nhân)
+.discoveries/
+
+# Raw sources cá nhân (người dùng tự thêm)
+raw/articles/
+raw/reddit/
+raw/twitter/
+raw/notes/
+raw/media/
+raw/assets/
+
+# Wiki content do LLM tạo (mỗi người có wiki riêng)
+wiki/entities/
+wiki/concepts/
+wiki/sources/
+wiki/syntheses/
+
+# Giữ lại template files
+!wiki/INDEX.md
+!wiki/LOG.md
+
+# Scripts output
+scripts/*.log
+
+# Wiki viewer screenshots
+screenshot-*.png
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node
 node_modules/
-.env
-processed/
-*.log
+.npm-cache/
+
+# Obsidian vault config (user-specific)
+.obsidian/
+
+# Temp/scratch files
+Untitled*
+*.base
+*.canvas
+view-pages.html
+view-graph.html
+2026-*.md
+
+# User's personal config (use config.example.yaml as template)
+config.yaml

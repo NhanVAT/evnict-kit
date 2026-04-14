@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LLM Wiki Viewer</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--accent:#58a6ff;--entity:#3fb950;--concept:#d2a8ff;--source:#f0883e;--synthesis:#f778ba;--red:#f85149}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;font-size:15px;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+
+/* Nav tabs */
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.nav button{flex:1;padding:10px 4px 8px;background:none;border:none;color:var(--text2);font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav button.active{color:var(--accent)}
+.nav button svg{width:22px;height:22px}
+
+/* Panels */
+.panel{display:none;padding:16px;padding-bottom:80px;min-height:100vh}
+.panel.active{display:block}
+
+/* Dashboard */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.dash-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.dash-card .num{font-size:32px;font-weight:700;display:block}
+.dash-card .label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:1px}
+.dash-card.entity .num{color:var(--entity)}
+.dash-card.concept .num{color:var(--concept)}
+.dash-card.source .num{color:var(--source)}
+.dash-card.synthesis .num{color:var(--synthesis)}
+.stat-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.stat-row .label{color:var(--text2);font-size:13px}
+.stat-row .val{font-weight:600}
+
+/* Page list */
+.search-box{width:100%;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;margin-bottom:16px;outline:none}
+.search-box:focus{border-color:var(--accent)}
+.search-box::placeholder{color:var(--text2)}
+.cat-header{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 8px;padding-left:4px}
+.page-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:6px;cursor:pointer;transition:border-color .15s}
+.page-item:active{border-color:var(--accent);background:var(--surface2)}
+.page-item .title{font-weight:600;font-size:14px;margin-bottom:2px}
+.page-item .links-count{font-size:12px;color:var(--text2)}
+.tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;margin-right:4px}
+.tag.entity{background:rgba(63,185,80,.15);color:var(--entity)}
+.tag.concept{background:rgba(210,168,255,.15);color:var(--concept)}
+.tag.source{background:rgba(240,136,62,.15);color:var(--source)}
+.tag.synthesis{background:rgba(247,120,186,.15);color:var(--synthesis)}
+
+/* Page detail */
+.page-detail{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;overflow-y:auto;padding:16px;padding-bottom:80px}
+.page-detail.open{display:block}
+.back-btn{background:var(--surface);border:1px solid var(--border);color:var(--accent);padding:8px 16px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:16px;display:inline-flex;align-items:center;gap:6px}
+.page-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;line-height:1.7}
+.page-content h1{font-size:22px;margin-bottom:12px;color:var(--text)}
+.page-content h2{font-size:17px;margin:20px 0 8px;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:4px}
+.page-content h3{font-size:15px;margin:16px 0 6px;color:var(--concept)}
+.page-content p{margin-bottom:10px}
+.page-content ul,.page-content ol{margin:8px 0 12px 20px}
+.page-content li{margin-bottom:4px}
+.page-content code{background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:13px;font-family:'SF Mono',Consolas,monospace}
+.page-content pre{background:var(--surface2);padding:12px;border-radius:8px;overflow-x:auto;margin:10px 0;font-size:13px}
+.page-content pre code{background:none;padding:0}
+.page-content blockquote{border-left:3px solid var(--accent);padding-left:14px;color:var(--text2);margin:10px 0;font-style:italic}
+.page-content table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.page-content th{background:var(--surface2);text-align:left;padding:8px;border:1px solid var(--border)}
+.page-content td{padding:8px;border:1px solid var(--border)}
+.page-content strong{color:var(--text)}
+.wiki-link{color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-style:dotted}
+
+/* Graph */
+#graph-canvas{width:100%;border-radius:12px;background:var(--surface);border:1px solid var(--border);touch-action:none}
+.graph-legend{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0;font-size:12px}
+.graph-legend span{display:flex;align-items:center;gap:4px}
+.graph-legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* Header */
+.header{padding:20px 0 12px;margin-bottom:8px}
+.header h1{font-size:22px;font-weight:700}
+.header p{color:var(--text2);font-size:13px}
+</style>
+</head>
+<body>
+
+<div id="panel-dash" class="panel active">
+  <div class="header">
+    <h1>LLM Wiki</h1>
+    <p>Knowledge base cá nhân — cập nhật 2026-04-06</p>
+  </div>
+  <div class="dash-grid">
+    <div class="dash-card entity"><span class="num">10</span><span class="label">Entities</span></div>
+    <div class="dash-card concept"><span class="num">12</span><span class="label">Concepts</span></div>
+    <div class="dash-card source"><span class="num">7</span><span class="label">Sources</span></div>
+    <div class="dash-card synthesis"><span class="num">6</span><span class="label">Syntheses</span></div>
+  </div>
+  <div class="stat-row"><span class="label">Tổng trang wiki</span><span class="val">34</span></div>
+  <div class="stat-row"><span class="label">Raw sources</span><span class="val">7 files</span></div>
+  <div class="stat-row"><span class="label">Cross-links</span><span class="val" id="link-count">—</span></div>
+  <div class="stat-row"><span class="label">Broken links</span><span class="val" style="color:var(--red)" id="broken-count">—</span></div>
+  <div class="stat-row"><span class="label">Lần discover cuối</span><span class="val">2026-04-06</span></div>
+  <div class="stat-row"><span class="label">Sức khỏe</span><span class="val" style="color:var(--entity)">Tốt</span></div>
+
+  <h2 style="margin:24px 0 12px;font-size:16px">Syntheses mới nhất</h2>
+  <div id="recent-syntheses"></div>
+</div>
+
+<div id="panel-pages" class="panel">
+  <input class="search-box" placeholder="Tìm kiếm trang wiki..." id="search" autocomplete="off">
+  <div id="page-list"></div>
+</div>
+
+<div id="panel-graph" class="panel">
+  <div class="header">
+    <h1>Graph View</h1>
+    <p>Nhấn vào node để xem trang</p>
+  </div>
+  <div class="graph-legend">
+    <span><span class="dot" style="background:var(--entity)"></span> Entity</span>
+    <span><span class="dot" style="background:var(--concept)"></span> Concept</span>
+    <span><span class="dot" style="background:var(--source)"></span> Source</span>
+    <span><span class="dot" style="background:var(--synthesis)"></span> Synthesis</span>
+  </div>
+  <canvas id="graph-canvas"></canvas>
+</div>
+
+<div class="page-detail" id="page-detail">
+  <button class="back-btn" onclick="closeDetail()">← Quay lại</button>
+  <div class="page-content" id="page-content"></div>
+</div>
+
+<nav class="nav">
+  <button class="active" onclick="showPanel('dash',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Tổng quan
+  </button>
+  <button onclick="showPanel('pages',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Trang
+  </button>
+  <button onclick="showPanel('graph',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="8.5" y1="7.5" x2="15.5" y2="16.5"/><line x1="15.5" y1="7.5" x2="8.5" y2="16.5"/></svg>
+    Graph
+  </button>
+</nav>
+
+<script>
+// ========== DATA ==========
+const pages = {
+"agent-skills":{"cat":"concept","title":"Agent Skills — SKILL.md Pattern","links":["claude-code-skills-guide","github-top10-open-source-ai","letta-agent-file","mcp-protocol"]},
+"compounding-knowledge":{"cat":"concept","title":"Compounding Knowledge (Kiến thức tích lũy)","links":["error-compounding","lint-workflow","llm-wiki-pattern","nick-spisak","query-workflow"]},
+"error-compounding":{"cat":"concept","title":"Error Compounding (Lỗi tích lũy)","links":["compounding-knowledge","lint-workflow","llm-wiki-pattern"]},
+"ingest-workflow":{"cat":"concept","title":"Ingest Workflow","links":["andrej-karpathy","compounding-knowledge","lint-workflow","llm-wiki-pattern","nick-spisak","query-workflow","rag-pattern"]},
+"karpathy-loop":{"cat":"concept","title":"The Karpathy Loop","links":["andrej-karpathy","autoresearch","llm-wiki-pattern","rag-pattern"]},
+"lint-workflow":{"cat":"concept","title":"Lint Workflow (Health Check)","links":["compounding-knowledge","error-compounding","ingest-workflow","llm-wiki-pattern","nick-spisak","query-workflow"]},
+"llm-wiki-pattern":{"cat":"concept","title":"LLM Wiki Pattern","links":["andrej-karpathy","compounding-knowledge","ingest-workflow","lint-workflow","nick-spisak","query-workflow","rag-pattern","schema-file"]},
+"local-ai-movement":{"cat":"concept","title":"Local AI Movement","links":["github-top10-open-source-ai","mcp-protocol","ollama","openclaw","top-ai-github-repos-2026"]},
+"mcp-protocol":{"cat":"concept","title":"Model Context Protocol (MCP)","links":["agent-skills","claude-code-skills-guide","github-top10-open-source-ai","letta-agent-file","owl-framework"]},
+"query-workflow":{"cat":"concept","title":"Query Workflow","links":["andrej-karpathy","compounding-knowledge","ingest-workflow","lint-workflow","llm-wiki-pattern","nick-spisak"]},
+"rag-pattern":{"cat":"concept","title":"RAG Pattern","links":["andrej-karpathy","llm-wiki-pattern"]},
+"schema-file":{"cat":"concept","title":"Schema File","links":["andrej-karpathy","llm-wiki-pattern","nick-spisak"]},
+"agent-browser":{"cat":"entity","title":"Agent Browser","links":["llm-wiki-pattern","nick-spisak","obsidian"]},
+"andrej-karpathy":{"cat":"entity","title":"Andrej Karpathy","links":["autoresearch","karpathy-loop","llm-wiki-pattern","nick-spisak","obsidian","rag-pattern"]},
+"autoresearch":{"cat":"entity","title":"Autoresearch","links":["andrej-karpathy","karpathy-autoresearch","karpathy-loop"]},
+"letta-agent-file":{"cat":"entity","title":"Letta — Agent File (.af)","links":["agent-skills","github-top10-open-source-ai","mcp-protocol","owl-framework"]},
+"nick-spisak":{"cat":"entity","title":"Nick Spisak","links":["agent-browser","andrej-karpathy","llm-wiki-pattern"]},
+"obsidian":{"cat":"entity","title":"Obsidian","links":["andrej-karpathy","llm-wiki-pattern","nick-spisak"]},
+"ollama":{"cat":"entity","title":"Ollama","links":["local-ai-movement","mcp-protocol","openclaw","top-ai-github-repos-2026"]},
+"openclaw":{"cat":"entity","title":"OpenClaw","links":["local-ai-movement","mcp-protocol","ollama","top-ai-github-repos-2026"]},
+"owl-framework":{"cat":"entity","title":"OWL Framework","links":["github-top10-open-source-ai","letta-agent-file","local-ai-movement","mcp-protocol"]},
+"peter-steinberger":{"cat":"entity","title":"Peter Steinberger (steipete)","links":["andrej-karpathy","steipete-agent-rules"]},
+"claude-code-skills-guide":{"cat":"source","title":"Claude Code Skills Guide 2026","links":["agent-skills","mcp-protocol"]},
+"github-top10-open-source-ai":{"cat":"source","title":"GitHub Top 10 Open Source AI","links":["letta-agent-file","local-ai-movement","mcp-protocol","owl-framework"]},
+"karpathy-autoresearch":{"cat":"source","title":"Nguồn: Karpathy Autoresearch","links":["andrej-karpathy","autoresearch","karpathy-loop"]},
+"karpathy-llm-wiki":{"cat":"source","title":"Nguồn: Karpathy LLM Wiki","links":["andrej-karpathy","compounding-knowledge","ingest-workflow","lint-workflow","llm-wiki-pattern","obsidian","query-workflow","rag-pattern","schema-file"]},
+"nick-spisak-second-brain":{"cat":"source","title":"Nguồn: Nick Spisak Second Brain","links":["agent-browser","andrej-karpathy","compounding-knowledge","error-compounding","llm-wiki-pattern","nick-spisak","obsidian","schema-file"]},
+"steipete-agent-rules":{"cat":"source","title":"Nguồn: steipete Agent Rules","links":["andrej-karpathy","peter-steinberger"]},
+"top-ai-github-repos-2026":{"cat":"source","title":"Top AI GitHub Repos 2026","links":["local-ai-movement","mcp-protocol","ollama","openclaw"]},
+"ai-tooling-philosophies":{"cat":"synthesis","title":"Triết lý AI Tooling: Karpathy, steipete, Spisak","links":["agent-browser","andrej-karpathy","autoresearch","error-compounding","karpathy-loop","llm-wiki-pattern","nick-spisak","obsidian","peter-steinberger","schema-file"]},
+"claude-code-skills-best-practices":{"cat":"synthesis","title":"Best Practices viết Claude Code Skills","links":["agent-skills","claude-code-skills-guide","mcp-protocol","peter-steinberger","schema-file","steipete-agent-rules"]},
+"local-ai-agent-stack":{"cat":"synthesis","title":"Stack Build AI Agent Local","links":["agent-skills","claude-code-skills-guide","llm-wiki-pattern","local-ai-movement","mcp-protocol","ollama","openclaw"]},
+"mcp-impact-analysis":{"cat":"synthesis","title":"MCP Impact Analysis","links":["agent-skills","claude-code-skills-guide","github-top10-open-source-ai","letta-agent-file","mcp-protocol","owl-framework"]},
+"rag-vs-llm-wiki-vs-local-ai":{"cat":"synthesis","title":"RAG vs LLM Wiki vs Local AI","links":["andrej-karpathy","compounding-knowledge","error-compounding","llm-wiki-pattern","local-ai-movement","mcp-protocol","nick-spisak","rag-pattern","schema-file","top-ai-github-repos-2026"]},
+"top-3-ai-trends-2026":{"cat":"synthesis","title":"Top 3 Xu hướng AI 2026","links":["agent-skills","autoresearch","karpathy-loop","letta-agent-file","local-ai-movement","mcp-protocol","ollama","openclaw","owl-framework","top-ai-github-repos-2026"]}
+};
+
+const catColors={"entity":"#3fb950","concept":"#d2a8ff","source":"#f0883e","synthesis":"#f778ba"};
+const catOrder=["synthesis","entity","concept","source"];
+const catLabels={"entity":"Entities","concept":"Concepts","source":"Sources","synthesis":"Syntheses"};
+const allIds=Object.keys(pages);
+
+// Count links & broken
+let totalLinks=0,brokenLinks=new Set();
+for(const[id,p]of Object.entries(pages)){
+  p.links.forEach(l=>{totalLinks++;if(!pages[l])brokenLinks.add(l)});
+}
+document.getElementById('link-count').textContent=totalLinks;
+document.getElementById('broken-count').textContent=brokenLinks.size;
+
+// ========== NAVIGATION ==========
+function showPanel(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(name==='graph')setTimeout(drawGraph,100);
+}
+
+// ========== DASHBOARD ==========
+(function(){
+  const c=document.getElementById('recent-syntheses');
+  const syns=allIds.filter(id=>pages[id].cat==='synthesis');
+  syns.forEach(id=>{
+    const d=document.createElement('div');
+    d.className='page-item';
+    d.innerHTML=`<span class="tag synthesis">synthesis</span><div class="title">${pages[id].title}</div><div class="links-count">${pages[id].links.length} liên kết</div>`;
+    d.onclick=()=>openDetail(id);
+    c.appendChild(d);
+  });
+})();
+
+// ========== PAGE LIST ==========
+function renderPageList(filter=''){
+  const c=document.getElementById('page-list');
+  c.innerHTML='';
+  const q=filter.toLowerCase();
+  catOrder.forEach(cat=>{
+    const items=allIds.filter(id=>pages[id].cat===cat&&(q===''||pages[id].title.toLowerCase().includes(q)||id.includes(q)));
+    if(!items.length)return;
+    const h=document.createElement('div');
+    h.className='cat-header';
+    h.textContent=catLabels[cat]+` (${items.length})`;
+    c.appendChild(h);
+    items.forEach(id=>{
+      const d=document.createElement('div');
+      d.className='page-item';
+      d.innerHTML=`<span class="tag ${cat}">${cat}</span><div class="title">${pages[id].title}</div><div class="links-count">${pages[id].links.length} liên kết</div>`;
+      d.onclick=()=>openDetail(id);
+      c.appendChild(d);
+    });
+  });
+}
+renderPageList();
+document.getElementById('search').addEventListener('input',e=>renderPageList(e.target.value));
+
+// ========== PAGE DETAIL ==========
+async function openDetail(id){
+  const p=pages[id];
+  if(!p)return;
+  const catMap={"entity":"entities","concept":"concepts","source":"sources","synthesis":"syntheses"};
+  const path=catMap[p.cat]+'/'+id+'.md';
+
+  // Build content from links & title (since we can't fetch local files from browser)
+  let html=`<h1>${p.title}</h1>`;
+  html+=`<p><span class="tag ${p.cat}">${p.cat}</span></p>`;
+  html+=`<h2>Liên kết (${p.links.length})</h2><ul>`;
+  p.links.forEach(l=>{
+    const target=pages[l];
+    if(target){
+      html+=`<li><span class="wiki-link" onclick="openDetail('${l}')">${target.title}</span> <span class="tag ${target.cat}" style="font-size:9px">${target.cat}</span></li>`;
+    } else {
+      html+=`<li style="color:var(--red)">⚠ ${l} (chưa tồn tại)</li>`;
+    }
+  });
+  html+=`</ul>`;
+
+  // Incoming links
+  const incoming=allIds.filter(oid=>pages[oid].links.includes(id));
+  if(incoming.length){
+    html+=`<h2>Được liên kết từ (${incoming.length})</h2><ul>`;
+    incoming.forEach(oid=>{
+      const o=pages[oid];
+      html+=`<li><span class="wiki-link" onclick="openDetail('${oid}')">${o.title}</span> <span class="tag ${o.cat}" style="font-size:9px">${o.cat}</span></li>`;
+    });
+    html+=`</ul>`;
+  }
+
+  html+=`<h2>Đường dẫn file</h2><p><code>wiki/${path}</code></p>`;
+
+  document.getElementById('page-content').innerHTML=html;
+  document.getElementById('page-detail').classList.add('open');
+}
+
+function closeDetail(){
+  document.getElementById('page-detail').classList.remove('open');
+}
+
+// ========== GRAPH VIEW ==========
+function drawGraph(){
+  const canvas=document.getElementById('graph-canvas');
+  const W=canvas.parentElement.clientWidth-32;
+  const H=Math.max(W*1.2,500);
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  // Layout: force-directed (simple)
+  const nodes={};
+  const ids=allIds;
+  ids.forEach((id,i)=>{
+    const angle=(i/ids.length)*Math.PI*2;
+    const r=Math.min(W,H)*0.35;
+    nodes[id]={
+      x:W/2+r*Math.cos(angle)+(Math.random()-.5)*40,
+      y:H/2+r*Math.sin(angle)+(Math.random()-.5)*40,
+      vx:0,vy:0,
+      cat:pages[id].cat,
+      title:pages[id].title,
+      linkCount:pages[id].links.length
+    };
+  });
+
+  // Edges
+  const edges=[];
+  ids.forEach(id=>{
+    pages[id].links.forEach(l=>{
+      if(nodes[l])edges.push([id,l]);
+    });
+  });
+
+  // Simulate
+  for(let iter=0;iter<200;iter++){
+    // Repulsion
+    for(let i=0;i<ids.length;i++){
+      for(let j=i+1;j<ids.length;j++){
+        const a=nodes[ids[i]],b=nodes[ids[j]];
+        let dx=b.x-a.x,dy=b.y-a.y;
+        let d=Math.sqrt(dx*dx+dy*dy)||1;
+        let f=800/(d*d);
+        a.vx-=dx/d*f;a.vy-=dy/d*f;
+        b.vx+=dx/d*f;b.vy+=dy/d*f;
+      }
+    }
+    // Attraction
+    edges.forEach(([a,b])=>{
+      const na=nodes[a],nb=nodes[b];
+      let dx=nb.x-na.x,dy=nb.y-na.y;
+      let d=Math.sqrt(dx*dx+dy*dy)||1;
+      let f=(d-80)*0.01;
+      na.vx+=dx/d*f;na.vy+=dy/d*f;
+      nb.vx-=dx/d*f;nb.vy-=dy/d*f;
+    });
+    // Center gravity
+    ids.forEach(id=>{
+      const n=nodes[id];
+      n.vx+=(W/2-n.x)*0.002;
+      n.vy+=(H/2-n.y)*0.002;
+      n.vx*=0.85;n.vy*=0.85;
+      n.x+=n.vx;n.y+=n.vy;
+      n.x=Math.max(30,Math.min(W-30,n.x));
+      n.y=Math.max(30,Math.min(H-30,n.y));
+    });
+  }
+
+  // Draw edges
+  ctx.strokeStyle='rgba(48,54,61,0.6)';
+  ctx.lineWidth=0.8;
+  edges.forEach(([a,b])=>{
+    ctx.beginPath();
+    ctx.moveTo(nodes[a].x,nodes[a].y);
+    ctx.lineTo(nodes[b].x,nodes[b].y);
+    ctx.stroke();
+  });
+
+  // Draw nodes
+  const nodePositions=[];
+  ids.forEach(id=>{
+    const n=nodes[id];
+    const r=Math.max(4,Math.min(12,3+n.linkCount*0.8));
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.fillStyle=catColors[n.cat];
+    ctx.fill();
+    ctx.strokeStyle=catColors[n.cat];
+    ctx.lineWidth=1;
+    ctx.stroke();
+    nodePositions.push({id,x:n.x,y:n.y,r});
+
+    // Label for larger nodes
+    if(n.linkCount>=3){
+      ctx.fillStyle='rgba(230,237,243,0.85)';
+      ctx.font='10px -apple-system,sans-serif';
+      ctx.textAlign='center';
+      let label=id.replace(/-/g,' ');
+      if(label.length>18)label=label.substring(0,16)+'…';
+      ctx.fillText(label,n.x,n.y-r-4);
+    }
+  });
+
+  // Click handler
+  canvas.onclick=function(e){
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left);
+    const my=(e.clientY-rect.top);
+    for(const np of nodePositions){
+      const dx=mx-np.x,dy=my-np.y;
+      if(dx*dx+dy*dy<(np.r+8)*(np.r+8)){
+        openDetail(np.id);
+        return;
+      }
+    }
+  };
+}
+</script>
+</body>
+</html>

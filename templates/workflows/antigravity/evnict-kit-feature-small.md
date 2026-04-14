@@ -19,7 +19,7 @@ description: Feature nhỏ nhanh — skip spec chi tiết, query wiki → plan n
 ## Bước 1: Query wiki
 Tìm context liên quan trong wiki:
 ```bash
-grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"
+grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"
 ```
 Đọc kết quả → áp dụng context.
 
@@ -92,7 +92,7 @@ C) Không — skip
 **→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
 - Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
 - Đọc lại AGENTS.md (hoặc context file tương ứng)
-- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md"`
 
 **→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
 

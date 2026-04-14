@@ -25,7 +25,7 @@ Nếu không tồn tại → DỪNG: *"Wiki chưa được liên kết. Chạy `
 
 ### Check 2: Wiki đã setup
 ```bash
-ls {project_name}-wiki/package.json
+ls {project_name}-wiki/CLAUDE.md
 ```
 Nếu không tồn tại → DỪNG: *"Wiki chưa khởi tạo. Chạy `/evnict-kit:init-wiki` trước."*
 
@@ -136,9 +136,8 @@ type: feature
 ## Bước 3: Push + Auto-ingest
 ```bash
 cp {generated_file} {wiki_path}/raw/notes/{module}-{feature-slug}.md
-cd {wiki_path} && node scripts/ingest.js
+cd {wiki_path} && Agent follow SKILL.md to ingest
 ```
-Nếu `scripts/ingest.js` không tồn tại → thử `npm run ingest`.
 Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 
 ## Bước 4: Confirm

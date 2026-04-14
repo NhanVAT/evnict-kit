@@ -1,17 +1,145 @@
-# LLM Wiki Configuration
-project: "{{PROJECT_NAME}}"
-raw_path: "raw/notes"
-processed_path: "processed"
-index_path: "processed/index.json"
+# LLM Wiki — Configuration Template
+# Copy this file to config.yaml and customize for your needs:
+#   cp config.example.yaml config.yaml
 
-# Ingest settings
-ingest:
-  auto: true
-  on_push: true
-  format: markdown
-  frontmatter: required
+# ============================================================
+# Wiki Info
+# ============================================================
+wiki:
+  name: "My LLM Wiki"
+  description: "Personal knowledge base — change this to your focus area"
+  language: "en"  # en | vi | zh | ja | ...
+  max_pages_per_ingest: 15
 
-# Query settings
-query:
-  search_type: keyword
-  max_results: 10
+# ============================================================
+# Topics — what you want to learn about
+# The system auto-discovers sources based on these keywords
+# ============================================================
+topics:
+  - name: "Your Topic 1"
+    keywords: ["keyword1", "keyword2", "keyword3"]
+    priority: high  # high | medium | low
+
+  - name: "Your Topic 2"
+    keywords: ["keyword1", "keyword2"]
+    priority: medium
+
+  # Add more topics:
+  # - name: "Topic Name"
+  #   keywords: ["keyword1", "keyword2"]
+  #   priority: medium
+
+# ============================================================
+# Feeds — automated source collection
+# ============================================================
+feeds:
+  # GitHub Trending
+  github_trending:
+    enabled: true
+    languages: ["python", "typescript", "rust", "go"]
+    since: "daily"
+    min_stars: 100
+    topics_filter: ["ai", "llm", "agent"]
+
+  # GitHub Orgs to watch
+  github_orgs: []
+    # - org: "anthropics"
+    #   watch: ["new_repos", "releases"]
+    #   note: "Anthropic"
+
+  # GitHub People to follow
+  github_people: []
+    # - user: "karpathy"
+    #   watch: ["new_repos", "releases", "stars"]
+    #   note: "Andrej Karpathy"
+
+  # GitHub Repos to track
+  github_repos: []
+    # - repo: "owner/repo-name"
+    #   watch: ["releases", "readme"]
+
+  # Reddit — pain points & use cases
+  reddit:
+    enabled: false  # Set to true and configure subreddits below
+    sort: "hot"
+    time_filter: "week"
+    min_upvotes: 20
+    max_posts_per_sub: 3
+    subreddits_pain_points: []
+      # - sub: "r/SaaS"
+      #   search: ["pain point", "need a tool", "frustrated with"]
+      #   note: "SaaS pain points"
+
+  # RSS feeds
+  rss: []
+    # - url: "https://blog.example.com/rss"
+    #   name: "Example Blog"
+
+  # Hacker News
+  hackernews:
+    enabled: true
+    min_score: 50
+    keywords: []  # Empty = use keywords from topics
+
+  # Twitter/X accounts
+  twitter_accounts: []
+    # - handle: "username"
+    #   note: "Description"
+
+# ============================================================
+# Schedule
+# ============================================================
+schedule:
+  run:
+    loop_interval: "1h"      # For /loop when using Claude Code
+    fallback_interval: "2h"  # For Windows Task Scheduler (CLI)
+    max_sources: 5
+
+  ingest:
+    trigger: "on_new_file"
+    batch_size: 5
+
+  lint:
+    interval: "6h"
+    auto_fix: false
+
+  recompile:
+    interval: "weekly"
+    cron: "0 10 * * 0"
+
+# ============================================================
+# Discovery Settings
+# ============================================================
+discovery:
+  strategies:
+    - web_search
+    - feed_poll
+    - gap_fill
+    # - reddit_scan      # Enable after configuring reddit feeds
+    # - github_trending
+    # - github_watch
+    # - snowball
+
+  web_search:
+    engine: "websearch"
+    max_results_per_topic: 5
+    recency: "month"
+
+  scraping:
+    tool: "webfetch"
+    save_images: true
+    max_article_length: 50000
+
+  dedup:
+    check_url: true
+    check_title: true
+    similarity_threshold: 0.9
+
+# ============================================================
+# Output Formats
+# ============================================================
+outputs:
+  formats:
+    - markdown
+  save_queries: true
+  save_syntheses: true
