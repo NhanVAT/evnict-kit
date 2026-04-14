@@ -1,5 +1,5 @@
 # EVNICT-KIT — Hướng Dẫn Sử Dụng
-> File này được tạo bởi evnict-kit v0.2.2
+> File này được tạo bởi evnict-kit v0.2.3
 > Đọc file này để biết dùng workflow nào cho công việc nào
 
 ---
@@ -190,7 +190,28 @@ evnict-kit init → init-rules → init-context → init-check → init-wiki →
 
 ---
 
+## 🔄 Cập nhật evnict-kit
+
+Khi có phiên bản mới:
+```bash
+# Bước 1: Cập nhật CLI
+evnict-kit upgrade          # hoặc: npm install -g evnict-kit@latest
+
+# Bước 2: Cập nhật templates vào project
+cd <workspace-folder>
+evnict-kit sync             # Ghi đè workflows/skills/rules mới
+
+# Bước 3 (tùy chọn): Kiểm tra
+evnict-kit doctor           # Verify version + workspace status
+```
+
+> **Lưu ý:** Lệnh `sync` chỉ ghi đè files evnict-kit (prefix `evnict-kit-`).
+> Files bạn tự thêm vào workflows/skills/rules sẽ **KHÔNG bị xóa**.
+> Context file (AGENTS.md) và project conventions cũng **KHÔNG bị ghi đè**.
+
+---
+
 ## 📌 Phiên bản
-- **evnict-kit:** v0.2.2
+- **evnict-kit:** v0.2.3
 - **Ngày tạo:** {{DATE}}
 - **Project:** {{PROJECT_NAME}}

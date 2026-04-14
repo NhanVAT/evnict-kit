@@ -158,6 +158,7 @@ evnict-kit init-rules --tool=cursor
 | `evnict-kit doctor` | 🩺 Kiểm tra môi trường, phiên bản, cập nhật |
 | `evnict-kit info` | 📊 Thống kê chi tiết toolkit |
 | `evnict-kit upgrade` | 🔄 Kiểm tra & cập nhật phiên bản mới nhất |
+| `evnict-kit sync` | 🔄 Re-deploy templates vào các project — ghi đè files evnict-kit, giữ nguyên files user |
 
 ### Lệnh Agent (gõ trong AI Agent chat)
 
@@ -281,7 +282,7 @@ FE: Đọc handoff.md → implement → update 🟢 Đã xử lý
 | Metric | Count |
 |--------|-------|
 | Rule Sets | 5 |
-| Skills | 22 |
+| Skills | 23 |
 | Workflows | 17 |
 | Supported AI Tools | 5 |
 | Tech Stacks (BE) | SpringBoot · ASP.NET · Java EE |
@@ -305,7 +306,14 @@ FE: Đọc handoff.md → implement → update 🟢 Đã xử lý
 
 ## 📜 Changelog
 
-### v0.2.2 (Current)
+### v0.2.3 (Current)
+- 🎨 **Frontend Design Skill**: Skill mới `evnict-kit-frontend-design` — hướng dẫn tư duy thiết kế UI chất lượng cao cho Angular, tránh "AI slop" aesthetics
+- 🧠 **Context Refresh**: Thêm section "Tuân thủ Rules & Context" vào TẤT CẢ 36 workflows/skills — cơ chế smart check (chỉ đọc lại nếu chưa đọc, tiết kiệm token)
+- 🎯 **FE Design Hint**: 6 workflows có code FE được bổ sung nhắc tham chiếu skill frontend-design
+- 🔄 **Sync Command**: Lệnh `evnict-kit sync` — re-deploy templates khi upgrade version, không xóa files user tự thêm
+- 📦 Hỗ trợ cả Antigravity + Claude workflows
+
+### v0.2.2
 - 🧹 Removed obsolete standalone commands (`init-rules`, `init-context`, `init-workflow`, `init-check`)
 - 🩺 `doctor` command: health check, version check, workspace status
 - 📊 `info` command: toolkit statistics dashboard

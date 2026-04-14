@@ -14,7 +14,7 @@ const c = {
   yellow: '\x1b[33m',
 };
 
-const version = '0.2.2';
+const version = '0.2.3';
 
 console.log('');
 console.log(`${c.bold}${c.cyan}  +====================================================+${c.reset}`);

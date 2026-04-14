@@ -70,5 +70,25 @@ git branch -D demo/init-check
 
 ---
 
+---
+
+## ⚠️ NHẮC NHỞ: Tuân thủ Rules & Context
+
+> **Agent dùng lâu có thể quên rules.** Trước khi bắt đầu code, tự kiểm tra:
+
+### Quick Check (agent tự đánh giá)
+1. ✅ Tôi đã đọc `.agent/rules/` trong phiên làm việc này chưa?
+2. ✅ Tôi đã đọc AGENTS.md (hoặc context file) chưa?
+3. ✅ Tôi nhớ rõ coding conventions của dự án này không?
+
+**→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
+- Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
+- Đọc lại AGENTS.md (hoặc context file tương ứng)
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+
+**→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
+
+> **NGUYÊN TẮC:** Không chắc convention → ĐỌC LẠI rule file. KHÔNG đoán.
+
 ## Output
 Demo code + verification report. User quyết định giữ hoặc xóa demo.

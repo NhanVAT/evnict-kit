@@ -154,6 +154,26 @@ Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 - Nếu feature có cả BE+FE → ghi đủ cả 2 phần (Backend + Frontend)
 - Nếu thiếu thông tin FE/BE → ghi phần có, note phần thiếu
 
+---
+
+## ⚠️ NHẮC NHỞ: Tuân thủ Rules & Context
+
+> **Agent dùng lâu có thể quên rules.** Trước khi bắt đầu code, tự kiểm tra:
+
+### Quick Check (agent tự đánh giá)
+1. ✅ Tôi đã đọc `.agent/rules/` trong phiên làm việc này chưa?
+2. ✅ Tôi đã đọc AGENTS.md (hoặc context file) chưa?
+3. ✅ Tôi nhớ rõ coding conventions của dự án này không?
+
+**→ Nếu BẤT KỲ câu nào = "CHƯA" hoặc "KHÔNG CHẮC":**
+- Đọc lại tất cả files trong `.agent/rules/` (hoặc thư mục rules tương ứng)
+- Đọc lại AGENTS.md (hoặc context file tương ứng)
+- Query wiki nếu có: `grep -rl "{keyword}" {wiki_path}/processed/ --include="*.md"`
+
+**→ Nếu TẤT CẢ = "RỒI" → tiếp tục workflow, KHÔNG cần đọc lại.**
+
+> **NGUYÊN TẮC:** Không chắc convention → ĐỌC LẠI rule file. KHÔNG đoán.
+
 ## Checklist hoàn thành
 - [ ] Đọc đủ nguồn (spec, plan, tasks, contract, git log)
 - [ ] Wiki note sinh đúng format frontmatter

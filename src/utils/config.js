@@ -97,7 +97,7 @@ export const TECH_TYPE_HINTS = {
 
 /**
  * Tool-specific directory and file mapping
- * Mỗi AI tool có cách tổ chức riêng — v0.2.2 Multi-Tool Support
+ * Mỗi AI tool có cách tổ chức riêng — v0.2.3 Multi-Tool Support
  */
 export const TOOL_MAP = {
   antigravity: {
@@ -153,7 +153,7 @@ export const TOOL_MAP = {
 };
 
 /**
- * Tools that have templates ready — v0.2.2: ALL 5 tools supported
+ * Tools that have templates ready — v0.2.3: ALL 5 tools supported
  */
 export const SUPPORTED_TOOLS = ['antigravity', 'claude', 'cursor', 'copilot', 'codex'];
 

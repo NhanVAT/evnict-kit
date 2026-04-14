@@ -5,9 +5,10 @@ import { addCommand } from '../src/commands/add.js';
 import { doctorCommand } from '../src/commands/doctor.js';
 import { infoCommand } from '../src/commands/info.js';
 import { upgradeCommand } from '../src/commands/upgrade.js';
+import { syncCommand } from '../src/commands/sync.js';
 
 const program = new Command();
-program.name('evnict-kit').description('EVNICT AI-Assisted Development Toolkit v0.2.2').version('0.2.2');
+program.name('evnict-kit').description('EVNICT AI-Assisted Development Toolkit v0.2.3').version('0.2.3');
 
 program.command('init')
   .description('Khoi tao workspace + deploy rules/skills/workflows vao tung project')
@@ -42,5 +43,10 @@ program.command('upgrade')
   .description('Check and upgrade to latest version')
   .option('-y, --yes', 'Auto-confirm upgrade')
   .action(upgradeCommand);
+
+program.command('sync')
+  .description('Re-deploy templates (workflows/skills/rules) vao cac project da init — ghi de files evnict-kit, giu nguyen files user')
+  .option('-y, --yes', 'Auto-confirm sync (khong hoi)')
+  .action(syncCommand);
 
 program.parse();

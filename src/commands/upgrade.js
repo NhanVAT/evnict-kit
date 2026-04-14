@@ -114,7 +114,13 @@ function doUpgrade(targetVersion) {
     });
     console.log('');
     console.log(`  ${c.green}+${c.reset} ${c.bold}Upgraded successfully -> v${targetVersion}${c.reset}`);
-    console.log(`  ${c.dim}Run ${c.cyan}evnict-kit doctor${c.dim} to verify.${c.reset}`);
+    console.log('');
+    console.log(`  ${c.yellow}!${c.reset} ${c.bold}Quan trọng:${c.reset} Chạy lệnh sau để cập nhật templates vào các project:`);
+    console.log(`  ${c.cyan}  cd <workspace-folder>${c.reset}`);
+    console.log(`  ${c.cyan}  evnict-kit sync${c.reset}`);
+    console.log('');
+    console.log(`  ${c.dim}Lệnh sync sẽ ghi đè workflows/skills/rules mới,${c.reset}`);
+    console.log(`  ${c.dim}nhưng giữ nguyên files bạn tự thêm.${c.reset}`);
     console.log('');
   } catch (e) {
     console.log('');
