@@ -1,6 +1,6 @@
 {
   "name": "evnict-kit",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "EVNICT AI-Assisted Development Toolkit - Bộ công cụ hỗ trợ phát triển phần mềm với AI theo quy định QĐ-TTPM",
   "type": "module",
   "bin": {

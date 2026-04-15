@@ -94,23 +94,23 @@ Nếu không tồn tại → DỪNG: *"Wiki chưa khởi tạo. Chạy `/evnict-
 
 ---
 
-## Bước 3: Nhóm theo module
-Phân tích kết quả scan → nhóm files theo module/chức năng.
-Mỗi module CÓ THỂ bao gồm: Controller + Service + Repository + DTO + Component + Page.
+## Bước 3: Nhóm theo phạm vi (Scope)
+Phân tích kết quả scan → nhóm theo module, chức năng, cấu trúc API hoặc một vài file cụ thể (tùy vào yêu cầu của user).
+Mỗi cụm CÓ THỂ bao gồm: Controller + Service + Repository + DTO + Component + Page.
 
 ---
 
-## Bước 4: Sinh wiki notes — MỖI MODULE 1 FILE
+## Bước 4: Sinh wiki notes — MỖI PHẠM VI 1 FILE
 
-Với mỗi module, LUÔN LUÔN tạo file vào thư mục `{wiki_path}/raw/notes/` với quy tắc tên `{domain}-{type}-{slug}.md`:
+Với mỗi module, chức năng, API hoặc file vừa scan, LUÔN LUÔN tạo file vào thư mục `{wiki_path}/raw/notes/` với quy tắc tên `{domain}-{type}-{slug}.md`:
 ```markdown
 ---
-title: "Module {module_name}"
+title: "{Tên module/chức năng/API}"
 discovered: {YYYY-MM-DD}
 topic: "{project_name}"
-tags: [{module, project_type, tech_stack}]
+tags: [{domain, project_type, tech_stack}]
 source: "evnict-kit-scan"
-type: module
+type: {module|feature|api|concept}
 ---
 
 # ═══ PHẦN NGHIỆP VỤ ═══

@@ -329,7 +329,10 @@ FE: Đọc handoff.md → implement → update 🟢 Đã xử lý
 
 ## 📜 Changelog
 
-### v0.2.6 (Current)
+### v0.2.7 (Current)
+- 🧠 **Dynamic Wiki Scope**: Nới lỏng ràng buộc cho workflow `wiki-scan-project`, cho phép xuất đầu ra (wiki notes) linh hoạt theo module, nhóm API, một tính năng nhỏ hoặc từng file cấu trúc tuỳ theo query của người dùng, thay vì gò bó cứng "mỗi module 1 file" như trước. Tự động nhận diện cấu trúc file wiki sinh ra với tham số YAML `type` và `title` linh hoạt theo phạm vi quy mô code.
+
+### v0.2.6
 - 🧹 **Workflow Ingestion Fix**: Thay thế hoàn toàn mã giả bash script (pseudo-code) cho tiến trình Auto-ingest tại tất cả 15 file quy trình (`wiki-scan-project`, `wiki-archive-feature`, `feature-large`, `attt`, `archive-wiki`) thành dạng natural language prompts chuẩn mực giúp AI auto-trigger skill Ingest, khắc phục lỗi Agent không thể nhận diện được lệnh giả dưới Terminal.
 - 📂 **Workspace Output Fix**: Chỉ định đích danh đường dẫn đầu ra bắt buộc `{wiki_path}/raw/notes/` cho kết quả sau quét Codebase (module `evnict-kit-wiki-scan-project`) để tương thích trọn vẹn với pattern LLM-Wiki.
 - ⚙️ **Dynamic CLI Initialization**: Framework config `init.js` nay đã tự động ánh xạ version trực tiếp từ `package.json` thay vì fix cứng.
