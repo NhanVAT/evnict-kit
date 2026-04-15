@@ -329,7 +329,12 @@ FE: Đọc handoff.md → implement → update 🟢 Đã xử lý
 
 ## 📜 Changelog
 
-### v0.2.5 (Current)
+### v0.2.6 (Current)
+- 🧹 **Workflow Ingestion Fix**: Thay thế hoàn toàn mã giả bash script (pseudo-code) cho tiến trình Auto-ingest tại tất cả 15 file quy trình (`wiki-scan-project`, `wiki-archive-feature`, `feature-large`, `attt`, `archive-wiki`) thành dạng natural language prompts chuẩn mực giúp AI auto-trigger skill Ingest, khắc phục lỗi Agent không thể nhận diện được lệnh giả dưới Terminal.
+- 📂 **Workspace Output Fix**: Chỉ định đích danh đường dẫn đầu ra bắt buộc `{wiki_path}/raw/notes/` cho kết quả sau quét Codebase (module `evnict-kit-wiki-scan-project`) để tương thích trọn vẹn với pattern LLM-Wiki.
+- ⚙️ **Dynamic CLI Initialization**: Framework config `init.js` nay đã tự động ánh xạ version trực tiếp từ `package.json` thay vì fix cứng.
+
+### v0.2.5
 - 🧠 **Wiki Query Synthesis**: Nâng cấp query từ grep-listing lên **full synthesis** theo chuẩn llm-wiki — Agent đọc INDEX.md → tổng hợp từ nhiều trang → tạo synthesis pages → ghi LOG.md
 - 🧹 **Init Wiki Cleanup**: Xóa bước "Install dependencies" (tàn dư npm) khỏi workflow init-wiki, sync với bản content gốc
 - 📂 **Wiki Template Fix**: Bổ sung `raw/reddit/` và `raw/twitter/` còn thiếu trong template (cần cho discover + pain-rank)

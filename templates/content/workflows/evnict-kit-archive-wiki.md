@@ -57,9 +57,9 @@ Gọi skill `evnict-kit-wiki` action=push:
 
 ## Bước 3: Auto-ingest (THAY CHO Agent follow SKILL.md to ingest thủ công)
 Agent TRỰC TIẾP chạy:
-```bash
-cd {wiki_path} && Agent follow SKILL.md to ingest
-```
+**Agent TỰ ĐỘNG thực hiện INGEST:**
+Đọc tài liệu `SKILL.md` của `evnict-kit-wiki` và làm theo các bước trong **Sub-command: INGEST** để nạp tri thức từ `raw/notes/` vào cấu trúc `wiki/` (history.json, INDEX, entities...).
+*(Lưu ý: Agent tự đọc và xử lý bằng các công cụ nội bộ, tuyệt đối KHÔNG in ra màn hình lệnh `cd ... && Agent follow ...` cho user)*
 KHÔNG bắt user switch terminal hay chạy npm thủ công.
 Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 

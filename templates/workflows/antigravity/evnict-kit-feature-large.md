@@ -364,9 +364,9 @@ related_specs: [".evnict/specs/{feature}/spec.md"]
 Copy vào `{wiki_path}/raw/notes/{domain}-{slug}.md`
 
 ### Bước 3: Trigger ingest
-```bash
-cd {wiki_path} && Agent follow SKILL.md to ingest
-```
+**Agent TỰ ĐỘNG thực hiện INGEST:**
+Đọc tài liệu `SKILL.md` của `evnict-kit-wiki` và làm theo các bước trong **Sub-command: INGEST** để nạp tri thức từ `raw/notes/` vào cấu trúc `wiki/` (history.json, INDEX, entities...).
+*(Lưu ý: Agent tự đọc và xử lý bằng công cụ nội bộ, tuyệt đối KHÔNG in ra màn hình lệnh `cd ... && Agent follow ...`)*
 ⚠️ Nếu ingest chưa setup → nhắc user chạy `/evnict-kit:init-wiki`
 
 ### Bước 4: Archive spec

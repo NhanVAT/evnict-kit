@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { initCommand } from '../src/commands/init.js';
 import { addCommand } from '../src/commands/add.js';
 import { doctorCommand } from '../src/commands/doctor.js';
@@ -7,8 +10,12 @@ import { infoCommand } from '../src/commands/info.js';
 import { upgradeCommand } from '../src/commands/upgrade.js';
 import { syncCommand } from '../src/commands/sync.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8'));
+
 const program = new Command();
-program.name('evnict-kit').description('EVNICT AI-Assisted Development Toolkit v0.2.3').version('0.2.3');
+program.name('evnict-kit').description(`EVNICT AI-Assisted Development Toolkit v${pkg.version}`).version(pkg.version);
 
 program.command('init')
   .description('Khoi tao workspace + deploy rules/skills/workflows vao tung project')

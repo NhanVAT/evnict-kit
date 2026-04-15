@@ -102,7 +102,7 @@ Mỗi module CÓ THỂ bao gồm: Controller + Service + Repository + DTO + Comp
 
 ## Bước 4: Sinh wiki notes — MỖI MODULE 1 FILE
 
-Với mỗi module, tạo file:
+Với mỗi module, LUÔN LUÔN tạo file vào thư mục `{wiki_path}/raw/notes/` với quy tắc tên `{domain}-{type}-{slug}.md`:
 ```markdown
 ---
 title: "Module {module_name}"
@@ -228,9 +228,9 @@ Append vào `.evnict/handoff/handoff.md`:
 ---
 
 ## Bước 6: Auto-ingest
-```bash
-cd {wiki_path} && Agent follow SKILL.md to ingest
-```
+**Agent TỰ ĐỘNG thực hiện INGEST:**
+Đọc tài liệu `SKILL.md` của `evnict-kit-wiki` và làm theo các bước trong **Sub-command: INGEST** để nạp tri thức từ `raw/notes/` vào cấu trúc `wiki/` (history.json, INDEX, entities...).
+*(Lưu ý: Agent tự đọc và xử lý bằng các công cụ nội bộ, tuyệt đối KHÔNG in ra màn hình lệnh `cd ... && Agent follow ...` cho user)*
 Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 
 ---

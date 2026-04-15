@@ -3,7 +3,12 @@ import { join, resolve } from 'node:path';
 import readline from 'node:readline';
 import { ensureDir, writeFile, copyTemplateDir, TEMPLATES_DIR } from '../utils/file.js';
 import { TECH_LABELS, TECH_TYPE_HINTS, getToolMap, SUPPORTED_TOOLS } from '../utils/config.js';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const CLI_VERSION = JSON.parse(readFileSync(join(__dirname, '..', '..', 'package.json'), 'utf8')).version;
 // ════════════════════════════════════════════════════════════════════
 // Entry point — route to interactive or non-interactive
 // ════════════════════════════════════════════════════════════════════
@@ -54,7 +59,7 @@ async function initInteractive(options) {
 
   console.log(`
 ╔═══════════════════════════════════════════╗
-║     🚀 EVNICT-KIT v0.2.5: Init Setup    ║
+║     🚀 EVNICT-KIT v\${CLI_VERSION}: Init Setup    ║
 ╚═══════════════════════════════════════════╝
 `);
 
@@ -224,7 +229,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║         🚀 EVNICT-KIT v0.2.5: Init Workspace         ║
+║         🚀 EVNICT-KIT v\${CLI_VERSION}: Init Workspace         ║
 ╚═══════════════════════════════════════════════════════╝
 
    Project:  ${name}
@@ -373,7 +378,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║  ✅  Workspace "${name}" v0.2.5 initialized!          ║
+║  ✅  Workspace "${name}" v${CLI_VERSION} initialized!          ║
 ╠═══════════════════════════════════════════════════════╣
 ║                                                       ║
 ║  Projects:                                            ║
@@ -709,7 +714,7 @@ function genConfig(name, repoConfigs, db, tool, wiki) {
     `  - { folder: "${r.folder}", type: "${r.type}", tech: "${r.tech}" }`
   ).join('\n');
 
-  return `# EVNICT-KIT v0.2.5 Config
+  return `# EVNICT-KIT v${CLI_VERSION} Config
 project:
   name: "${name}"
 repos:

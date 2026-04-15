@@ -134,10 +134,9 @@ type: feature
 ```
 
 ## Bước 3: Push + Auto-ingest
-```bash
-cp {generated_file} {wiki_path}/raw/notes/{module}-{feature-slug}.md
-cd {wiki_path} && Agent follow SKILL.md to ingest
-```
+1. Copy hoặc tạo file vừa sinh vào `{wiki_path}/raw/notes/{module}-{feature-slug}.md`
+2. **Agent TỰ ĐỘNG thực hiện INGEST:** Đọc tài liệu `SKILL.md` của `evnict-kit-wiki` và làm theo các bước trong **Sub-command: INGEST** để nạp tri thức từ `raw/notes/` vào cấu trúc `wiki/` (history.json, INDEX, entities...).
+*(Lưu ý: Agent tự đọc và xử lý bằng công cụ nội bộ, tuyệt đối KHÔNG in ra màn hình lệnh `cd ... && Agent follow ...`)*
 Nếu vẫn fail → báo: *"Chạy `/evnict-kit:init-wiki`"*
 
 ## Bước 4: Confirm
