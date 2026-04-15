@@ -329,7 +329,14 @@ FE: Đọc handoff.md → implement → update 🟢 Đã xử lý
 
 ## 📜 Changelog
 
-### v0.2.4 (Current)
+### v0.2.5 (Current)
+- 🧠 **Wiki Query Synthesis**: Nâng cấp query từ grep-listing lên **full synthesis** theo chuẩn llm-wiki — Agent đọc INDEX.md → tổng hợp từ nhiều trang → tạo synthesis pages → ghi LOG.md
+- 🧹 **Init Wiki Cleanup**: Xóa bước "Install dependencies" (tàn dư npm) khỏi workflow init-wiki, sync với bản content gốc
+- 📂 **Wiki Template Fix**: Bổ sung `raw/reddit/` và `raw/twitter/` còn thiếu trong template (cần cho discover + pain-rank)
+- 🎨 **Init Wizard UX**: Cải thiện prompt phân loại project — hiện rõ tech đã detect, gợi ý loại, hướng dẫn nhập
+- 🗑️ Xóa file `EVNICT-KIT-FIX-WIKI-PROMPT.md` (checklist migration đã hoàn thành)
+
+### v0.2.4
 - 📚 **Native llm-wiki Integration**: Chuyển đổi toàn bộ quy trình Wiki sang chuẩn `llm-wiki` với Agent-driven ingestion — xoá bỏ sự phụ thuộc script Node.js (`scripts/ingest.js`)
 - 🧹 **Cấu trúc Wiki chuẩn hóa**: Wiki project giờ đây được sắp xếp sạch sẽ trong `wiki/entities/`, `wiki/concepts/`, `wiki/sources/`, `wiki/syntheses/` (thay vì folder `processed/` cũ)
 - 🤖 **Auto-Skills**: Agent tự động dùng skill `llm-wiki` (`SKILL.md`) để đọc code, sinh tri thức và trích xuất thực thể chuyên nghiệp

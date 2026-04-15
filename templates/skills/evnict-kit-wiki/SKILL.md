@@ -131,51 +131,94 @@ Thực hiện ingest procedure (tiến hành theo hướng dẫn Sub-command ING
 
 ---
 
-## Sub-command: QUERY — Tìm kiếm trong wiki
+## Sub-command: QUERY — Tìm kiếm và Tổng hợp tri thức
 
 ### Khi nào
 - Trước khi bắt đầu feature mới → tìm context liên quan
-- Khi fix bug → tìm chức năng bị bug đã được document chưa
-- Khi brainstorm → explore cái đã có
+- Khi fix bug → tìm nguyên nhân, chức năng liên quan
+- Khi brainstorm → explore và tổng hợp tri thức đã có
+- Khi cần hiểu business rule, architecture, convention
 
-### Quy trình
+### Quy trình (theo llm-wiki pattern)
 
-#### Bước 1: Đọc wiki INDEX
-```bash
-cat {wiki_path}/wiki/INDEX.md 2>/dev/null || cat {wiki_path}/wiki/INDEX.md 2>/dev/null
-```
-Map keywords từ input vào index.
+#### Bước 1: Đọc INDEX.md — Xác định trang liên quan
+1. Đọc `{wiki_path}/wiki/INDEX.md`
+2. Map keywords từ câu hỏi vào danh mục wiki
+3. Xác định categories cần đọc: entities, concepts, sources, syntheses
+4. Lập danh sách trang cần đọc dựa trên INDEX
 
-#### Bước 2: Tìm kiếm theo keyword
-```bash
-# Tìm trong wiki pages
-grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md" 2>/dev/null
-grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md" 2>/dev/null
-# Tìm trong raw notes
-grep -rl "{keyword}" {wiki_path}/raw/notes/ --include="*.md" 2>/dev/null
-```
+#### Bước 2: Đọc ĐẦY ĐỦ các trang wiki liên quan
+1. Đọc tất cả trang liên quan đã xác định từ INDEX (không chỉ 1-2 trang)
+2. Theo cross-references `[[links]]` trong các trang → mở rộng context
+3. Nếu INDEX không đủ → dùng grep bổ sung:
+   ```bash
+   grep -rl "{keyword}" {wiki_path}/wiki/ --include="*.md" 2>/dev/null
+   ```
+4. Nếu keyword không khớp chính xác → thử mở rộng:
+   - Tách keyword thành từ đơn
+   - Tìm theo domain/topic trong frontmatter
+   - Tìm theo tags
 
-#### Bước 3: Đọc nội dung tìm được
-Đọc các file match → extract phần liên quan.
+#### Bước 3: Tổng hợp câu trả lời (SYNTHESIS)
+**Đây là bước QUAN TRỌNG NHẤT — tạo giá trị tri thức compound.**
 
-#### Bước 4: Format output
+1. Tổng hợp thông tin từ nhiều trang wiki thành câu trả lời hoàn chỉnh
+2. Trích dẫn nguồn wiki: `[[tên-trang-wiki]]`
+3. Nếu nhiều góc nhìn → so sánh, phân tích, bảng đối chiếu
+4. Nếu có mâu thuẫn giữa các trang → ghi rõ cả hai quan điểm
+
+**Quy tắc:**
+- Trả lời **DỰA TRÊN WIKI** — KHÔNG dùng kiến thức bên ngoài
+- Nếu wiki thiếu thông tin → nói rõ và gợi ý:
+  - Topics/sources cần discover thêm
+  - Chạy `/evnict-kit:wiki-scan-project` để populate
+  - Push thêm tri thức thủ công
+- Format đầu ra linh hoạt: markdown, bảng so sánh, bullet points
+
+#### Bước 4: Lưu kết quả (nếu có giá trị phân tích)
+Nếu câu trả lời chứa so sánh/phân tích/tổng hợp có giá trị:
+1. Tạo synthesis page với frontmatter chuẩn:
+   ```yaml
+   ---
+   type: synthesis
+   topic: "{keyword}"
+   created: YYYY-MM-DD
+   sources_count: N
+   ---
+   ```
+2. Lưu vào `{wiki_path}/wiki/syntheses/{keyword-slug}.md`
+3. Hoặc lưu query result vào `{wiki_path}/outputs/query-{keyword-slug}-{date}.md`
+4. Cập nhật `{wiki_path}/wiki/INDEX.md` (nếu tạo synthesis page mới)
+
+#### Bước 5: Ghi LOG.md
+Ghi vào `{wiki_path}/wiki/LOG.md`:
 ```markdown
-## 📚 Wiki Results for "{keyword}"
+## [YYYY-MM-DD HH:mm] query | "{keyword}"
+- Trang đọc: {N} pages
+- Kết quả: {tóm tắt 1 dòng}
+- Synthesis: {path nếu có lưu}
+```
 
-### Found {N} results:
+### Output format
+```
+📚 Wiki Query: "{keyword}"
+═══════════════════════════
 
-#### 1. {title} ({domain})
-- File: {path}
-- Date: {date}
-- Tags: {tags}
-- Summary: {2-3 câu tóm tắt}
+## Tổng hợp
+{Câu trả lời tổng hợp từ nhiều nguồn wiki — đây là phần QUAN TRỌNG NHẤT}
 
-#### 2. ...
+## Nguồn wiki đã tham chiếu
+- [[entity-or-concept-1]] — {1 dòng context}
+- [[entity-or-concept-2]] — {1 dòng context}
+- [[source-summary]] — {1 dòng context}
 
-### Gaps detected
-{Nếu wiki thiếu thông tin về keyword → gợi ý:}
+## Gaps detected
+{Nếu wiki thiếu thông tin:}
 💡 Wiki chưa có đủ thông tin về "{keyword}".
    Gợi ý: Chạy scan-code hoặc push thêm tri thức.
+
+## Synthesis saved
+{Nếu đã lưu:} ✅ Đã lưu tổng hợp: wiki/syntheses/{slug}.md
 ```
 
 ---

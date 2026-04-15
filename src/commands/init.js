@@ -54,7 +54,7 @@ async function initInteractive(options) {
 
   console.log(`
 ╔═══════════════════════════════════════════╗
-║     🚀 EVNICT-KIT v0.2.4: Init Setup    ║
+║     🚀 EVNICT-KIT v0.2.5: Init Setup    ║
 ╚═══════════════════════════════════════════╝
 `);
 
@@ -121,13 +121,14 @@ async function initInteractive(options) {
   }
 
   // Step 5: Gán type cho mỗi repo (auto-detect + confirm)
-  console.log('');
+  console.log('\n📂 Phân loại project (backend/frontend):');
+  console.log('   Nhấn Enter để chấp nhận gợi ý, hoặc gõ: backend | frontend | shared | library\n');
   const repoConfigs = [];
   for (const f of selectedFolders) {
     const suggestedType = f.detectedTech ? (TECH_TYPE_HINTS[f.detectedTech] || '') : '';
-    const defaultLabel = suggestedType ? ` [${suggestedType}]` : '';
-    const techInfo = f.detectedTech ? ` (${TECH_LABELS[f.detectedTech] || f.detectedTech})` : '';
-    const typeInput = (await ask(`? Loại cho ${f.folder}${techInfo}${defaultLabel}: `)).trim();
+    const techInfo = f.detectedTech ? `${TECH_LABELS[f.detectedTech] || f.detectedTech}` : 'không nhận diện được';
+    const defaultHint = suggestedType ? suggestedType : 'backend';
+    const typeInput = (await ask(`  ${f.folder}/ → phát hiện: ${techInfo} → loại [${defaultHint}]: `)).trim();
     const type = typeInput || suggestedType || 'backend';
     const tech = f.detectedTech || (type === 'backend' ? 'springboot' : 'angular');
     repoConfigs.push({ folder: f.folder, type, tech });
@@ -223,7 +224,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║         🚀 EVNICT-KIT v0.2.4: Init Workspace         ║
+║         🚀 EVNICT-KIT v0.2.5: Init Workspace         ║
 ╚═══════════════════════════════════════════════════════╝
 
    Project:  ${name}
@@ -372,7 +373,7 @@ async function deployWorkspace({ name, tool, repoConfigs, db, wikiEnabled, cwd }
 
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
-║  ✅  Workspace "${name}" v0.2.4 initialized!          ║
+║  ✅  Workspace "${name}" v0.2.5 initialized!          ║
 ╠═══════════════════════════════════════════════════════╣
 ║                                                       ║
 ║  Projects:                                            ║
@@ -708,7 +709,7 @@ function genConfig(name, repoConfigs, db, tool, wiki) {
     `  - { folder: "${r.folder}", type: "${r.type}", tech: "${r.tech}" }`
   ).join('\n');
 
-  return `# EVNICT-KIT v0.2.4 Config
+  return `# EVNICT-KIT v0.2.5 Config
 project:
   name: "${name}"
 repos:

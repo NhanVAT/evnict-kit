@@ -1,18 +1,12 @@
 ---
-description: Setup llm-wiki — copy template, , config, first ingest. Hoặc clone fresh từ GitHub.
+description: Setup llm-wiki — copy template, config, first ingest. Hoặc clone fresh từ GitHub.
 ---
 
 # Init Wiki — Setup LLM Wiki
 **Command:** `/evnict-kit:init-wiki`
 
 ## Mục đích
-Setup llm-wiki knowledge base cho dự án. Copy từ template có sẵn hoặc clone từ GitHub.
-
-## Options
-- `/evnict-kit:init-wiki` → Copy từ templates/wiki/ (mặc định)
-- `/evnict-kit:init-wiki --from-github` → Clone fresh từ GitHub
-
----
+Setup llm-wiki knowledge base cho dự án.
 
 ## Workflow (Default — Copy Template)
 
@@ -22,38 +16,29 @@ cat .evnict/config.yaml | grep wiki
 # → wiki.folder: "{project}-wiki"
 ```
 
-### Bước 2: Copy template
-Wiki template đã có sẵn trong evnict-kit package:
+### Bước 2: Khởi tạo
+Run CLI command:
 ```bash
-cp -r {evnict-kit}/templates/wiki/ ./{project}-wiki/
+evnict-kit init-wiki
 ```
-
-### Bước 3: Install dependencies
+Hoặc tạo Agent session trong thư mục wiki và chạy:
 ```bash
-cd {project}-wiki
+/llm-wiki init "{project}"
 ```
 
-### Bước 4: Configure
-Tạo `config.yaml` từ `config.example.yaml`:
-```yaml
-project: "{project-name}"
-raw_path: "raw/notes"
-processed_path: "wiki"
-index_path: "wiki/index.json"
-```
+### Bước 3: Generate base files
+Agent tự động copy templates (hoặc setup từ real github llm-wiki) và tạo config.
 
-### Bước 5: Tạo folder structure
-```bash
-mkdir -p raw/notes
-mkdir -p wiki
-```
+### Bước 4: Tạo folder structure
+Agent tạo:
+- `wiki/` (entities, concepts, sources, syntheses)
+- `raw/` (notes, articles, media, assets)
+- `.discoveries/`
 
-### Bước 6: First ingest (nếu có notes sẵn)
-```bash
-Agent follow SKILL.md to ingest
-```
+### Bước 5: First ingest (nếu có notes sẵn)
+Agent sẽ scan và cập nhật INDEX.
 
-### Bước 7: Verify
+### Bước 6: Verify
 ```
 ✅ Wiki setup: {project}-wiki/
 ✅ Config created
@@ -69,10 +54,8 @@ Agent follow SKILL.md to ingest
 git clone https://github.com/mduongvandinh/llm-wiki.git {project}-wiki
 ```
 
-### Bước 2: Install + Configure
-Same as steps 3-7 above.
-
----
+### Bước 2: Configure + First ingest
+Same as steps 3-6 above.
 
 ---
 
@@ -95,4 +78,4 @@ Same as steps 3-7 above.
 > **NGUYÊN TẮC:** Không chắc convention → ĐỌC LẠI rule file. KHÔNG đoán.
 
 ## Output
-Wiki folder ready at `{project}-wiki/` ready for Agent to populate.
+Wiki folder ready at `{project}-wiki/` as a standalone AI Agent knowledge base.
